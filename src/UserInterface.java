@@ -1,4 +1,3 @@
-
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -9,8 +8,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+
 
 
 public class UserInterface extends Application {
@@ -91,29 +92,36 @@ public class UserInterface extends Application {
         cardListOutput.clear();
         controller.filteredCardArrayList.clear();
         controller.searchForTerm(searchTermInputArea.getText());
-        cardListOutput.setText(controller.showOutputOfFilteredList());
+        displayFilteredByColorList();
     }
 
     private void displayFilteredByColorList(){
-        if(whiteButton.isSelected()){
-            controller.filterByColor("W");
+        String filterColors = "";
+
+        if (whiteButton.isSelected() || blueButton.isSelected() || blackButton.isSelected()
+                || redButton.isSelected() || greenButton.isSelected()) {
+            if (whiteButton.isSelected()) {
+                filterColors = filterColors + "W";
+            }
+            if (blueButton.isSelected()) {
+                filterColors = filterColors + "U";
+            }
+            if (blackButton.isSelected()) {
+                filterColors = filterColors + "B";
+            }
+            if (redButton.isSelected()) {
+                filterColors = filterColors + "R";
+            }
+            if (greenButton.isSelected()) {
+                filterColors = filterColors + "G";
+            }
+
         }
-        else if (blueButton.isSelected()){
-            controller.filterByColor("U");
-        }
-        else if(blackButton.isSelected()){
-            controller.filterByColor("B");
-        }
-        else if(redButton.isSelected()){
-            controller.filterByColor("R");
-        }
-        else if(greenButton.isSelected()){
-            controller.filterByColor("G");
-        }
-        else if(colorlessButton.isSelected()){
+
+        if (colorlessButton.isSelected()){
             controller.filterForColorless();
-            controller.filterByColor("C");
         }
+        controller.filterByMoreThanOneColor(filterColors);
         cardListOutput.setText(controller.showColorFilteredList());
     }
 }

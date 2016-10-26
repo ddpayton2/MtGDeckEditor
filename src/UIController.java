@@ -4,6 +4,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UIController {
 
@@ -69,5 +70,14 @@ public class UIController {
             output += card.getCardName() + "\n";
         }
         return output;
+    }
+
+    public void filterByMoreThanOneColor(String color){
+        filteredByColorArrayList.clear();
+        for(Card card: filteredCardArrayList){
+            if(card.getCardCost().contains(color)){
+                filteredByColorArrayList.add(card);
+            }
+        }
     }
 }

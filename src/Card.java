@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 
 public class Card {
 
     private String cardName;
     private String cardSet;
-    private String cardColor;
+    public String cardColor;
     private String cardCost;
     private String cardCmc;
     private String cardType;
