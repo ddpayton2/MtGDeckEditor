@@ -4,7 +4,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UIController {
 
@@ -15,7 +14,7 @@ public class UIController {
     public String setUpArray() throws IOException, SAXException, ParserConfigurationException {
         SAXParserFactory spfac = SAXParserFactory.newInstance();
         SAXParser sp = spfac.newSAXParser();
-        XmlFileReader handler = new XmlFileReader();
+        cardHandler handler = new cardHandler();
         sp.parse("cards.xml", handler);
         String output = "";
         fullCardArrayList = handler.cardList;

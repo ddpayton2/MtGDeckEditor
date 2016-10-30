@@ -3,7 +3,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import java.util.ArrayList;
 
-public class XmlFileReader extends DefaultHandler{
+public class cardHandler extends DefaultHandler{
 
     public Card card = new Card();
     public String temp;
