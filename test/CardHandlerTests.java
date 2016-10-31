@@ -5,7 +5,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class cardHandlerTests {
+public class CardHandlerTests {
 
     @Test
     public void testXmlFileReader_cardName() throws ParserConfigurationException, SAXException, IOException {

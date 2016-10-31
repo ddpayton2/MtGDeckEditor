@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class magicFormat {
+public class MagicFormat {
 
     private ArrayList<Set> setList = new ArrayList<>();
     private Set set = new Set();

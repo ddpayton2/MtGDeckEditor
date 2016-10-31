@@ -12,8 +12,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-
-
 public class UserInterface extends Application {
 
     private final TextField searchTermInputArea = new TextField();
