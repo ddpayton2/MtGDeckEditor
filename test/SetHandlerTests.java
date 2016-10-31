@@ -8,10 +8,10 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class setHandlerTests {
+public class SetHandlerTests {
 
     private final SAXParserFactory factory = SAXParserFactory.newInstance();
-    private setHandler reader = new setHandler();
+    private CardSetHandler reader = new CardSetHandler();
 
     @Before
     public void setUp() throws IOException, SAXException, ParserConfigurationException {

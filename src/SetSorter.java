@@ -1,9 +1,9 @@
 
 import java.util.Collections;
 
-public class setSorter {
+public class SetSorter {
 
-    private setHandler handler = new setHandler();
+    private CardSetHandler handler = new CardSetHandler();
 
     public void sortSetList(){
         Collections.sort(handler.allSetsList, (o1, o2) -> o1.getReleaseDate().compareToIgnoreCase(o2.getReleaseDate()));

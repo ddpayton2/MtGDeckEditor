@@ -14,7 +14,7 @@ public class UIController {
     public String setUpArray() throws IOException, SAXException, ParserConfigurationException {
         SAXParserFactory spfac = SAXParserFactory.newInstance();
         SAXParser sp = spfac.newSAXParser();
-        cardHandler handler = new cardHandler();
+        CardHandler handler = new CardHandler();
         sp.parse("cards.xml", handler);
         String output = "";
         fullCardArrayList = handler.cardList;
