@@ -8,7 +8,7 @@ public class setHandler extends DefaultHandler {
 
     public Set set = new Set();
     public String temp;
-    public ArrayList<Set> allSetsList = new ArrayList<>();
+    private ArrayList<Set> allSetsList = new ArrayList<>();
 
     public void characters(char[] buffer, int start, int length) {
         temp = new String(buffer, start, length);
