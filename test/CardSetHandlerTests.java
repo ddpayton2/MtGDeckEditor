@@ -16,20 +16,20 @@ import java.util.Collection;
 @RunWith(Parameterized.class)
 public class CardSetHandlerTests {
 
-    private SAXParserFactory factory = SAXParserFactory.newInstance();
+    private static SAXParserFactory factory = SAXParserFactory.newInstance();
+    private static CardSetHandler reader = new CardSetHandler();
+    private static ImmutableList<Set> allSetsList;
 
-    @Before
-    public void setUp() throws IOException, SAXException, ParserConfigurationException {
-        CardSetHandler reader = new CardSetHandler();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("cards.xml");
+    public static void setUp() throws IOException, SAXException, ParserConfigurationException {
+        InputStream inputStream = CardSetHandlerTests.class.getResourceAsStream("cards.xml");
         SAXParser parser = factory.newSAXParser();
         parser.parse(inputStream, reader);
+        allSetsList = reader.returnAllSetsList();
     }
 
     @Parameterized.Parameters
-    public static Collection<Object[]> data(){
-        CardSetHandler reader = new CardSetHandler();
-        ImmutableList<Set> allSetsList = reader.returnAllSetsList();
+    public static Collection<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
+        setUp();
         return Arrays.asList(new Object[][]{
                 {"BRB", allSetsList.get(0).getSetName()},
                 {"ARN", allSetsList.get(1).getSetName()},
