@@ -3,16 +3,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CardSetHandler extends DefaultHandler {
+class CardSetHandler extends DefaultHandler {
 
     private Set set = new Set();
     private String temp;
-    private ImmutableList.Builder<Set> builder = ImmutableList.builder();
-    private List<Set> cardSets = new ArrayList<>();
-    private ImmutableList<Set> allSetsList = buildImmutableListOfAllSets();
+    private ImmutableList.Builder builder = ImmutableList.builder();
 
     public void characters(char[] buffer, int start, int length) {
         temp = new String(buffer, start, length);
@@ -27,7 +22,7 @@ public class CardSetHandler extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName){
         if(qName.equalsIgnoreCase("set")){
-            cardSets.add(set);
+            builder.add(set);
         }
         if(qName.equalsIgnoreCase("name")){
             set.setSetName(temp);
@@ -44,12 +39,7 @@ public class CardSetHandler extends DefaultHandler {
         }
     }
 
-    public ImmutableList<Set> buildImmutableListOfAllSets(){
-        ImmutableList<Set> list = builder.addAll(cardSets).build();
-        return list;
-    }
-
-    public ImmutableList<Set> returnAllSetsList(){
-        return this.allSetsList;
+    public ImmutableList returnAllSetsList(){
+        return builder.build();
     }
 }
