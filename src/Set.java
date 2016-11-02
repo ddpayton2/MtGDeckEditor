@@ -1,10 +1,12 @@
 
+import java.time.LocalDate;
+
 public class Set {
 
     public String setName;
     public String longname;
     public String setType;
-    public String releaseDate;
+    public LocalDate releaseDate;
 
     public String getLongname(){
         return this.longname;
@@ -30,11 +32,11 @@ public class Set {
         this.setType = setType;
     }
 
-    public String getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return this.releaseDate;
     }
 
-    public void setReleaseDate(String date){
+    public void setReleaseDate(LocalDate date){
         this.releaseDate = date;
     }
 }

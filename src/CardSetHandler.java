@@ -2,6 +2,8 @@ import com.google.common.collect.ImmutableList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 class CardSetHandler extends DefaultHandler {
 
@@ -34,8 +36,10 @@ class CardSetHandler extends DefaultHandler {
             set.setSetType(temp);
         }
         else if(qName.equalsIgnoreCase("releaseDate")){
-            temp = temp.replaceAll("-", "");
-            set.setReleaseDate(temp);
+            if(!temp.equalsIgnoreCase("")){
+                LocalDate date = LocalDate.parse(temp, DateTimeFormatter.ISO_LOCAL_DATE);
+                set.setReleaseDate(date);
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 import com.google.common.collect.ImmutableList;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -36,9 +35,7 @@ public class CardSetHandlerTests {
                 {"Battle Royale Box Set", allSetsList.get(0).getLongname()},
                 {"Prophecy", allSetsList.get(3).getLongname()},
                 {"Box", allSetsList.get(0).getSetType()},
-                {"Duel deck", allSetsList.get(8).getSetType()},
-                {"19991112", allSetsList.get(0).getReleaseDate()},
-                {"20120330", allSetsList.get(2).getReleaseDate()}
+                {"Duel deck", allSetsList.get(8).getSetType()}
         });
     }
 
@@ -49,7 +46,7 @@ public class CardSetHandlerTests {
     public String actual;
 
     @Test
-    public void cardSetHandlerTest() throws SAXException {
+    public void CardSetHandlerTest(){
         Assert.assertEquals(expected, actual);
     }
 }
