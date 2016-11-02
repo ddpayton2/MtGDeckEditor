@@ -1,11 +1,18 @@
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 
-public class Set {
+@SuppressWarnings("WeakerAccess")
+public class Set implements Comparable<Set>{
 
+    @SuppressWarnings("WeakerAccess")
     public String setName;
+    @SuppressWarnings("WeakerAccess")
     public String longname;
+    @SuppressWarnings("WeakerAccess")
     public String setType;
+    @SuppressWarnings("WeakerAccess")
     public LocalDate releaseDate;
 
     public String getLongname(){
@@ -38,5 +45,10 @@ public class Set {
 
     public void setReleaseDate(LocalDate date){
         this.releaseDate = date;
+    }
+
+    @Override
+    public int compareTo(@NotNull Set o) {
+        return (this.getReleaseDate().compareTo(o.getReleaseDate()));
     }
 }

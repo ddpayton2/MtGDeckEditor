@@ -1,16 +1,22 @@
+import com.google.common.collect.Lists;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import java.util.ArrayList;
 
+import java.util.List;
+
+@SuppressWarnings("WeakerAccess")
 public class CardHandler extends DefaultHandler{
 
+    @SuppressWarnings("WeakerAccess")
     public Card card = new Card();
-    public String temp;
-    public ArrayList<Card> cardList = new ArrayList<>();
+    @SuppressWarnings("WeakerAccess")
+    private final StringBuilder builder = new StringBuilder();
+    public final List<Card> cardList = Lists.newArrayList();
+    private String temp;
 
     public void characters(char[] buffer, int start, int length) {
-        temp = new String(buffer, start, length);
+        builder.append(buffer, start, length);
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -21,33 +27,32 @@ public class CardHandler extends DefaultHandler{
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
-
+        temp = builder.toString().trim();
         if (qName.equalsIgnoreCase("card")) {
             cardList.add(card);
         }
         if (qName.equalsIgnoreCase("name")) {
             card.setCardName(temp);
         }
-        else if (qName.equalsIgnoreCase("set")) {
-            card.setCardSet(temp);
-        }
         else if (qName.equalsIgnoreCase("color")) {
-            card.setCardColor(temp);
+                card.setCardColor(temp);
         }
         else if(qName.equalsIgnoreCase("manacost")){
+            if(!temp.contains("W" )&& !temp.contains("U") && !temp.contains("B") && !temp.contains("R") && !temp.contains("G")){
+                card.setCardColor("C");
+            }
             card.setCardCost(temp);
-        }
-        else if(qName.equalsIgnoreCase("cmc")){
-            card.setCardCmc(temp);
         }
         else if(qName.equalsIgnoreCase("type")){
             card.setCardType(temp);
         }
-        else if(qName.equalsIgnoreCase("pt")){
-            card.setPowerToughness(temp);
-        }
         else if(qName.equalsIgnoreCase("text")){
-            card.setCardText(temp);
+            card.setCardText(temp.replaceAll("\n", "").replaceAll("&quot;", "'").replaceAll("&#39;", "'"));
         }
+        builder.setLength(0);
+    }
+
+    public List<Card> getCardList(){
+        return cardList;
     }
 }

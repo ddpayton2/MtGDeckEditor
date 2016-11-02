@@ -1,15 +1,19 @@
+import com.google.common.collect.Lists;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class UIController {
 
-    private ArrayList<Card> fullCardArrayList = new ArrayList<>();
-    public ArrayList<Card> filteredCardArrayList = new ArrayList<>();
-    private ArrayList<Card> filteredByColorArrayList = new ArrayList<>();
+    private List<Card> fullCardArrayList;
+    public final List<Card> filteredCardArrayList = Lists.newArrayList();
+    private final List<Card> filteredByColorArrayList = Lists.newArrayList();
 
     public String setUpArray() throws IOException, SAXException, ParserConfigurationException {
         SAXParserFactory spfac = SAXParserFactory.newInstance();
@@ -17,9 +21,9 @@ public class UIController {
         CardHandler handler = new CardHandler();
         sp.parse("cards.xml", handler);
         String output = "";
-        fullCardArrayList = handler.cardList;
-        for(int i = 0; i < fullCardArrayList.size(); i++){
-            output += fullCardArrayList.get(i).getCardName() + "\n";
+        fullCardArrayList = handler.getCardList();
+        for (Card aFullCardArrayList : fullCardArrayList) {
+            output += aFullCardArrayList.getCardName() + "\n";
         }
         return output;
     }
@@ -47,20 +51,12 @@ public class UIController {
     }
 
     public void filterByColor(String color){
-        for(Card card: filteredCardArrayList){
-            if(card.getCardCost().contains(color)){
-                filteredByColorArrayList.add(card);
-            }
-        }
+        filteredByColorArrayList.addAll(filteredCardArrayList.stream().filter(card -> card.getCardCost().contains(color)).collect(Collectors.toList()));
     }
 
     public void filterForColorless(){
-        for(Card card: filteredCardArrayList){
-            if(!card.getCardCost().contains("W") && !card.getCardCost().contains("U") && !card.getCardCost().contains("B")
-                    && !card.getCardCost().contains("R") && !card.getCardCost().contains("G") && !card.getCardCost().contains("C")){
-                filteredByColorArrayList.add(card);
-            }
-        }
+        filteredByColorArrayList.addAll(filteredCardArrayList.stream().filter(card -> !card.getCardCost().contains("W") && !card.getCardCost().contains("U") && !card.getCardCost().contains("B")
+                && !card.getCardCost().contains("R") && !card.getCardCost().contains("G") && !card.getCardCost().contains("C")).collect(Collectors.toList()));
     }
 
     public String showColorFilteredList(){
@@ -73,10 +69,6 @@ public class UIController {
 
     public void filterByMoreThanOneColor(String color){
         filteredByColorArrayList.clear();
-        for(Card card: filteredCardArrayList){
-            if(card.getCardCost().contains(color)){
-                filteredByColorArrayList.add(card);
-            }
-        }
+        filteredByColorArrayList.addAll(filteredCardArrayList.stream().filter(card -> card.getCardCost().contains(color)).collect(Collectors.toList()));
     }
 }

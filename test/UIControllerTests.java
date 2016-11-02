@@ -6,11 +6,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
-
 public class UIControllerTests {
 
-    private UIController controller = new UIController();
+    private final UIController controller = new UIController();
 
     @Before
     public void setUpTests() throws ParserConfigurationException, SAXException, IOException {

@@ -1,4 +1,4 @@
-import com.google.common.collect.ImmutableList;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,13 +11,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+@SuppressWarnings({"unused", "CanBeFinal"})
 @RunWith(Parameterized.class)
 public class CardSetHandlerTests {
 
-    private static SAXParserFactory factory = SAXParserFactory.newInstance();
-    private static CardSetHandler reader = new CardSetHandler();
-    private static ImmutableList<Set> allSetsList;
+    private static final SAXParserFactory factory = SAXParserFactory.newInstance();
+    private static final CardSetHandler reader = new CardSetHandler();
+    private static List<Set> allSetsList;
 
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {
         InputStream inputStream = CardSetHandlerTests.class.getResourceAsStream("cards.xml");
@@ -39,9 +41,11 @@ public class CardSetHandlerTests {
         });
     }
 
+    @SuppressWarnings("WeakerAccess")
     @Parameterized.Parameter
     public String expected;
 
+    @SuppressWarnings("WeakerAccess")
     @Parameterized.Parameter(value = 1)
     public String actual;
 

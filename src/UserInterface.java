@@ -1,9 +1,7 @@
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,14 +14,14 @@ public class UserInterface extends Application {
 
     private final TextField searchTermInputArea = new TextField();
     private final TextArea cardListOutput = new TextArea();
-    private Button searchButton = new Button("Search");
-    private ToggleButton whiteButton = new ToggleButton("W");
-    private ToggleButton blueButton = new ToggleButton("U");
-    private ToggleButton blackButton = new ToggleButton("B");
-    private ToggleButton redButton = new ToggleButton("R");
-    private ToggleButton greenButton = new ToggleButton("G");
-    private ToggleButton colorlessButton = new ToggleButton("C");
-    private UIController controller = new UIController();
+    private final Button searchButton = new Button("Search");
+    private final ToggleButton whiteButton = new ToggleButton("W");
+    private final ToggleButton blueButton = new ToggleButton("U");
+    private final ToggleButton blackButton = new ToggleButton("B");
+    private final ToggleButton redButton = new ToggleButton("R");
+    private final ToggleButton greenButton = new ToggleButton("G");
+    private final ToggleButton colorlessButton = new ToggleButton("C");
+    private final UIController controller = new UIController();
 
     @Override
     public void start(Stage primaryStage) {
@@ -32,39 +30,20 @@ public class UserInterface extends Application {
         primaryStage.show();
         try {
             cardListOutput.setText(controller.setUpArray());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
     }
 
     private Scene createScene() {
         cardListOutput.setEditable(false);
-        searchButton.setOnAction(event -> {
-            try {
-                displayCardsBySearchTerm();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            }
-        });
+        searchButton.setOnAction(event ->
+                displayCardsBySearchTerm()
+        );
 
-        searchTermInputArea.setOnKeyPressed(new EventHandler<KeyEvent>(){
-            @Override
-            public void handle(KeyEvent event){
-                if(event.getCode() == KeyCode.ENTER){
-                    try {
-                        displayCardsBySearchTerm();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (SAXException e) {
-                        e.printStackTrace();
-                    }
-                }
+        searchTermInputArea.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                    displayCardsBySearchTerm();
             }
         });
 
@@ -85,7 +64,7 @@ public class UserInterface extends Application {
         return new Scene(base);
     }
 
-    private void displayCardsBySearchTerm() throws IOException, SAXException {
+    private void displayCardsBySearchTerm() {
         searchButton.disarm();
         cardListOutput.clear();
         controller.filteredCardArrayList.clear();

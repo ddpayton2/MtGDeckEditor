@@ -1,15 +1,17 @@
-import com.google.common.collect.ImmutableList;
+
+import com.google.common.collect.Lists;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 class CardSetHandler extends DefaultHandler {
 
     private Set set = new Set();
     private String temp;
-    private ImmutableList.Builder builder = ImmutableList.builder();
+    private final List<Set> allSetsList = Lists.newArrayList();
 
     public void characters(char[] buffer, int start, int length) {
         temp = new String(buffer, start, length);
@@ -24,7 +26,7 @@ class CardSetHandler extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName){
         if(qName.equalsIgnoreCase("set")){
-            builder.add(set);
+            allSetsList.add(set);
         }
         if(qName.equalsIgnoreCase("name")){
             set.setSetName(temp);
@@ -43,7 +45,7 @@ class CardSetHandler extends DefaultHandler {
         }
     }
 
-    public ImmutableList returnAllSetsList(){
-        return builder.build();
+    public List<Set> returnAllSetsList(){
+        return allSetsList;
     }
 }
