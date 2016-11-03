@@ -1,5 +1,5 @@
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class Card {
 
     private String cardName;

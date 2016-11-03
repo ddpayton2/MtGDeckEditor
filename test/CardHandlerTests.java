@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings({"unused", "CanBeFinal"})
+@SuppressWarnings({"unused", "CanBeFinal", "WeakerAccess"})
 @RunWith(Parameterized.class)
 public class CardHandlerTests {
 
@@ -53,10 +53,10 @@ public class CardHandlerTests {
     }
 
     @Parameterized.Parameter
-    private String expected;
+    public String expected;
 
     @Parameterized.Parameter(value = 1)
-    private String actual;
+    public String actual;
 
     @Test
     public void CardHandlerTest(){

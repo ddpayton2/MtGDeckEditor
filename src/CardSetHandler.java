@@ -1,12 +1,13 @@
-
 import com.google.common.collect.Lists;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 class CardSetHandler extends DefaultHandler {
 
     private Set set = new Set();

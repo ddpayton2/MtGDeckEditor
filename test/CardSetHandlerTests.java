@@ -1,9 +1,9 @@
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings({"unused", "CanBeFinal"})
+@SuppressWarnings({"unused", "CanBeFinal", "WeakerAccess"})
 @RunWith(Parameterized.class)
 public class CardSetHandlerTests {
 
@@ -41,11 +41,9 @@ public class CardSetHandlerTests {
         });
     }
 
-    @SuppressWarnings("WeakerAccess")
     @Parameterized.Parameter
     public String expected;
 
-    @SuppressWarnings("WeakerAccess")
     @Parameterized.Parameter(value = 1)
     public String actual;
 

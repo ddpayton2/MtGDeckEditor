@@ -6,13 +6,9 @@ import java.time.LocalDate;
 @SuppressWarnings("WeakerAccess")
 public class Set implements Comparable<Set>{
 
-    @SuppressWarnings("WeakerAccess")
     public String setName;
-    @SuppressWarnings("WeakerAccess")
     public String longname;
-    @SuppressWarnings("WeakerAccess")
     public String setType;
-    @SuppressWarnings("WeakerAccess")
     public LocalDate releaseDate;
 
     public String getLongname(){
