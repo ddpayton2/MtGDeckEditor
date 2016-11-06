@@ -1,4 +1,7 @@
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -21,6 +24,17 @@ public class UserInterface extends Application {
     private final ToggleButton redButton = new ToggleButton("R");
     private final ToggleButton greenButton = new ToggleButton("G");
     private final ToggleButton colorlessButton = new ToggleButton("C");
+    private final TextArea cardInfo = new TextArea();
+    private final ObservableList<String> formats =
+            FXCollections.observableArrayList(
+                    "Standard",
+                    "Modern",
+                    "Legacy",
+                    "Vintage",
+                    "Commander (EDH)"
+            );
+    @SuppressWarnings("unchecked")
+    private final ComboBox formatList = new ComboBox(formats);
     private final UIController controller = new UIController();
 
     @Override
@@ -54,13 +68,37 @@ public class UserInterface extends Application {
         greenButton.setOnAction(event -> displayFilteredByColorList());
         colorlessButton.setOnAction(event -> displayFilteredByColorList());
 
-        VBox base = new VBox(
-                new Label("Enter Search Term"),
-                searchTermInputArea,
-                searchButton,
-                new HBox(whiteButton, blueButton, blackButton, redButton, greenButton, colorlessButton),
-                new Label("Cards"),
-                cardListOutput);
+        VBox searchBarAndCardListResults = new VBox(
+                        new Label("Enter Search Term"),
+                        searchTermInputArea,
+                        searchButton,
+                        new HBox(whiteButton, blueButton, blackButton, redButton, greenButton, colorlessButton),
+                        new Label("Cards"),
+                        cardListOutput
+        );
+
+        cardInfo.setMaxSize(200,400);
+        cardInfo.setEditable(false);
+
+        VBox cardInfoDisplay = new VBox(
+                new Label("Card Information"),
+                cardInfo
+        );
+
+        cardInfoDisplay.setAlignment(Pos.TOP_CENTER);
+
+        VBox formatBox = new VBox(
+                new Label("Format"),
+                new VBox(formatList)
+        );
+
+        formatBox.setAlignment(Pos.TOP_RIGHT);
+
+        HBox base = new HBox(
+                searchBarAndCardListResults,
+                cardInfoDisplay,
+                formatBox
+        );
         return new Scene(base);
     }
 

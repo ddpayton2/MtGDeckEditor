@@ -12,7 +12,7 @@ class CardSetHandler extends DefaultHandler {
 
     private Set set = new Set();
     private String temp;
-    private final List<Set> allSetsList = Lists.newArrayList();
+    private List<Set> allSetsList = Lists.newArrayList();
 
     public void characters(char[] buffer, int start, int length) {
         temp = new String(buffer, start, length);
@@ -21,7 +21,7 @@ class CardSetHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         temp = "";
         if (qName.equalsIgnoreCase("set")) {
-            set = new Set();
+                set = new Set();
         }
     }
 
@@ -47,6 +47,6 @@ class CardSetHandler extends DefaultHandler {
     }
 
     public List<Set> returnAllSetsList(){
-        return allSetsList;
+        return this.allSetsList;
     }
 }
