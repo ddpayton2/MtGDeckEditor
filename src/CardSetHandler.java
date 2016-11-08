@@ -11,23 +11,25 @@ import java.util.List;
 class CardSetHandler extends DefaultHandler {
 
     private Set set = new Set();
+    private final StringBuilder builder = new StringBuilder();
     private String temp;
     private List<Set> allSetsList = Lists.newArrayList();
 
     public class DoneParsingException extends SAXException{}
 
     public void characters(char[] buffer, int start, int length) {
-        temp = new String(buffer, start, length);
+        builder.append(buffer, start, length);
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         temp = "";
         if (qName.equalsIgnoreCase("set")) {
-                set = new Set();
+            set = new Set();
         }
     }
 
     public void endElement(String uri, String localName, String qName) throws DoneParsingException {
+        temp = builder.toString().trim();
         if(qName.equalsIgnoreCase("set")){
             allSetsList.add(set);
         }
@@ -35,7 +37,7 @@ class CardSetHandler extends DefaultHandler {
             set.setSetName(temp);
         }
         else if(qName.equalsIgnoreCase("longname")){
-            set.setLongname(temp.replace("&quot;", "'"));
+            set.setLongname(temp.replaceAll("\n", "").replaceAll("&quot;", "'").replaceAll("&#39;", "'"));
         }
         else if(qName.equalsIgnoreCase("setType")){
             set.setSetType(temp);
@@ -53,6 +55,7 @@ class CardSetHandler extends DefaultHandler {
         else if(qName.equalsIgnoreCase("sets")){
             throw new DoneParsingException();
         }
+        builder.setLength(0);
     }
 
     public List<Set> returnAllSetsList(){

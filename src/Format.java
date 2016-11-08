@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Format {
-    
+
     private String formatName;
     private List<Set> legalSets;
     private ArrayList<Card> bannedList;
