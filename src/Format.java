@@ -1,24 +1,33 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Format {
-
-    private String name;
+    
+    private String formatName;
     private List<Set> legalSets;
-    private List<Card> bannedList;
-    private List<Card> restrictedList;
+    private ArrayList<Card> bannedList;
+    private ArrayList<Card> restrictedList;
 
-    public Format (String formatName, List<Set> legalSets, List<Card> bannedList, List<Card> restrictedList){
-        this.name = formatName;
-        this.legalSets = legalSets;
-        this.bannedList = bannedList;
-        this.restrictedList = restrictedList;
+    public Format(String name, List<Set> list, ArrayList<Card> banned, ArrayList<Card> restricted){
+        this.formatName = name;
+        this.legalSets = list;
+        this.bannedList = banned;
+        this.restrictedList = restricted;
     }
 
-    public String getName(){
-        return this.name;
+    public String getFormatName(){
+        return this.formatName;
     }
 
     public List<Set> getLegalSets(){
         return this.legalSets;
+    }
+
+    public ArrayList<Card> getBannedList(){
+        return this.bannedList;
+    }
+
+    public ArrayList<Card> getRestrictedList(){
+        return this.restrictedList;
     }
 }

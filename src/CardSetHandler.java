@@ -14,6 +14,8 @@ class CardSetHandler extends DefaultHandler {
     private String temp;
     private List<Set> allSetsList = Lists.newArrayList();
 
+    public class DoneParsingException extends SAXException{}
+
     public void characters(char[] buffer, int start, int length) {
         temp = new String(buffer, start, length);
     }
@@ -25,7 +27,7 @@ class CardSetHandler extends DefaultHandler {
         }
     }
 
-    public void endElement(String uri, String localName, String qName){
+    public void endElement(String uri, String localName, String qName) throws DoneParsingException {
         if(qName.equalsIgnoreCase("set")){
             allSetsList.add(set);
         }
@@ -33,7 +35,7 @@ class CardSetHandler extends DefaultHandler {
             set.setSetName(temp);
         }
         else if(qName.equalsIgnoreCase("longname")){
-            set.setLongname(temp);
+            set.setLongname(temp.replace("&quot;", "'"));
         }
         else if(qName.equalsIgnoreCase("setType")){
             set.setSetType(temp);
@@ -43,6 +45,13 @@ class CardSetHandler extends DefaultHandler {
                 LocalDate date = LocalDate.parse(temp, DateTimeFormatter.ISO_LOCAL_DATE);
                 set.setReleaseDate(date);
             }
+            else{
+                LocalDate date = LocalDate.of(0000,01,31);
+                set.setReleaseDate(date);
+            }
+        }
+        else if(qName.equalsIgnoreCase("sets")){
+            throw new DoneParsingException();
         }
     }
 

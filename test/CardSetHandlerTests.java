@@ -24,7 +24,13 @@ public class CardSetHandlerTests {
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {
         InputStream inputStream = CardSetHandlerTests.class.getResourceAsStream("cards.xml");
         SAXParser parser = factory.newSAXParser();
-        parser.parse(inputStream, reader);
+        try{
+            parser.parse(inputStream, reader);
+        }
+        catch(CardSetHandler.DoneParsingException e){
+        }
+        catch(SAXException s){
+        }
         allSetsList = reader.returnAllSetsList();
     }
 

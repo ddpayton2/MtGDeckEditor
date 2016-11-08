@@ -1,19 +1,43 @@
 
 import com.google.common.collect.Ordering;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class SetSorterTests {
 
+    private List<Set> allSetsList;
     private final SetSorter sorter = new SetSorter();
-    private final List<Set> list = sorter.getList();
-    private final boolean isSorted = Ordering.natural().isOrdered(list);
+    private boolean isSorted;
+
+    @Before
+    public void setUp() throws ParserConfigurationException, SAXException, IOException {
+        InputStream inputStream = SetSorterTests.class.getResourceAsStream("cards.xml");
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
+        CardSetHandler handler = new CardSetHandler();
+        try{
+            parser.parse(inputStream, handler);
+        }
+        catch(CardSetHandler.DoneParsingException e){
+        }
+        catch(SAXException s){
+        }
+        allSetsList = handler.returnAllSetsList();
+    }
 
     @Test
     public void setSorterTest(){
-        sorter.sort();
+        sorter.sort(allSetsList);
+        isSorted = Ordering.natural().isOrdered(allSetsList);
         Assert.assertTrue("The list is ordered", isSorted);
     }
 
