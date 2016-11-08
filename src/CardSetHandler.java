@@ -13,7 +13,7 @@ class CardSetHandler extends DefaultHandler {
     private Set set = new Set();
     private final StringBuilder builder = new StringBuilder();
     private String temp;
-    private List<Set> allSetsList = Lists.newArrayList();
+    private final List<Set> allSetsList = Lists.newArrayList();
 
     public class DoneParsingException extends SAXException{}
 
@@ -48,7 +48,7 @@ class CardSetHandler extends DefaultHandler {
                 set.setReleaseDate(date);
             }
             else{
-                LocalDate date = LocalDate.of(0000,01,31);
+                LocalDate date = LocalDate.of(0, 1,31);
                 set.setReleaseDate(date);
             }
         }

@@ -26,10 +26,7 @@ public class CardSetHandlerTests {
         SAXParser parser = factory.newSAXParser();
         try{
             parser.parse(inputStream, reader);
-        }
-        catch(CardSetHandler.DoneParsingException e){
-        }
-        catch(SAXException s){
+        } catch(SAXException s){
         }
         allSetsList = reader.returnAllSetsList();
     }

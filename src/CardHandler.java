@@ -9,7 +9,7 @@ import java.util.List;
 public class CardHandler extends DefaultHandler{
 
     @SuppressWarnings("WeakerAccess")
-    public Card card = new Card();
+    private Card card = new Card();
     @SuppressWarnings("WeakerAccess")
     private final StringBuilder builder = new StringBuilder();
     public final List<Card> cardList = Lists.newArrayList();
@@ -21,9 +21,9 @@ public class CardHandler extends DefaultHandler{
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         temp = "";
-        if (qName.equalsIgnoreCase("card")) {
-            card = new Card();
-        }
+            if (qName.equalsIgnoreCase("card")) {
+                card = new Card();
+            }
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -35,7 +35,7 @@ public class CardHandler extends DefaultHandler{
             card.setCardName(temp);
         }
         else if (qName.equalsIgnoreCase("color")) {
-                card.setCardColor(temp);
+            card.setCardColor(temp);
         }
         else if(qName.equalsIgnoreCase("manacost")){
             if(!temp.contains("W" )&& !temp.contains("U") && !temp.contains("B") && !temp.contains("R") && !temp.contains("G")){

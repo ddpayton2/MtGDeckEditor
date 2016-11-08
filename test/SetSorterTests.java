@@ -16,7 +16,6 @@ public class SetSorterTests {
 
     private List<Set> allSetsList;
     private final SetSorter sorter = new SetSorter();
-    private boolean isSorted;
 
     @Before
     public void setUp() throws ParserConfigurationException, SAXException, IOException {
@@ -26,10 +25,7 @@ public class SetSorterTests {
         CardSetHandler handler = new CardSetHandler();
         try{
             parser.parse(inputStream, handler);
-        }
-        catch(CardSetHandler.DoneParsingException e){
-        }
-        catch(SAXException s){
+        } catch(SAXException s){
         }
         allSetsList = handler.returnAllSetsList();
     }
@@ -37,7 +33,7 @@ public class SetSorterTests {
     @Test
     public void setSorterTest(){
         sorter.sort(allSetsList);
-        isSorted = Ordering.natural().isOrdered(allSetsList);
+        boolean isSorted = Ordering.natural().isOrdered(allSetsList);
         Assert.assertTrue("The list is ordered", isSorted);
     }
 

@@ -22,7 +22,7 @@ public class Card {
     }
 
     public void setCardColor(String color){
-            this.cardColor = color;
+        this.cardColor = color;
     }
 
     public String getCardCost(){
