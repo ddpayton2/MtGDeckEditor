@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 
 @SuppressWarnings("WeakerAccess")
-public class Set implements Comparable<Set>{
+public class MtgSet implements Comparable<MtgSet>{
 
     public String setName;
     public String longname;
@@ -19,19 +19,19 @@ public class Set implements Comparable<Set>{
         this.longname = setLongname;
     }
 
-    public String getSetName(){
+    public String getMtgSetName(){
         return this.setName;
     }
 
-    public void setSetName(String name){
+    public void setMtgSetName(String name){
         this.setName = name;
     }
 
-    public String getSetType() {
+    public String getMtgSetType() {
         return this.setType;
     }
 
-    public void setSetType(String setType){
+    public void setMtgSetType(String setType){
         this.setType = setType;
     }
 
@@ -44,7 +44,7 @@ public class Set implements Comparable<Set>{
     }
 
     @Override
-    public int compareTo(@NotNull Set o) {
+    public int compareTo(@NotNull MtgSet o) {
         return (this.getReleaseDate().compareTo(o.getReleaseDate()));
     }
 }

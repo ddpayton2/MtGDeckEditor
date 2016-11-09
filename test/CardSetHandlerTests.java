@@ -19,7 +19,7 @@ public class CardSetHandlerTests {
 
     private static final SAXParserFactory factory = SAXParserFactory.newInstance();
     private static final CardSetHandler reader = new CardSetHandler();
-    private static List<Set> allSetsList;
+    private static List<MtgSet> allSetsList;
 
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {
         InputStream inputStream = CardSetHandlerTests.class.getResourceAsStream("cards.xml");
@@ -35,12 +35,12 @@ public class CardSetHandlerTests {
     public static Collection<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
         setUp();
         return Arrays.asList(new Object[][]{
-                {"BRB", allSetsList.get(0).getSetName()},
-                {"ARN", allSetsList.get(1).getSetName()},
-                {"Battle Royale Box Set", allSetsList.get(0).getLongname()},
+                {"BRB", allSetsList.get(0).getMtgSetName()},
+                {"ARN", allSetsList.get(1).getMtgSetName()},
+                {"Battle Royale Box MtgSet", allSetsList.get(0).getLongname()},
                 {"Prophecy", allSetsList.get(3).getLongname()},
-                {"Box", allSetsList.get(0).getSetType()},
-                {"Duel deck", allSetsList.get(8).getSetType()}
+                {"Box", allSetsList.get(0).getMtgSetType()},
+                {"Duel deck", allSetsList.get(8).getMtgSetType()}
         });
     }
 

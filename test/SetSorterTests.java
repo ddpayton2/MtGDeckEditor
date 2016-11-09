@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SetSorterTests {
 
-    private List<Set> allSetsList;
+    private List<MtgSet> allSetsList;
     private final SetSorter sorter = new SetSorter();
 
     @Before

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class VintageFormat extends Format{
 
-    private final List<Set> vintageLegalSets = Lists.newArrayList();
+    private final List<MtgSet> vintageLegalMtgSets = Lists.newArrayList();
     private final List<Card> vintageBannedList = Lists.newArrayList();
     private final List<Card> vintageRestrictedList = Lists.newArrayList();
     private Format.Builder builder = new Format.Builder();
@@ -13,10 +13,10 @@ public class VintageFormat extends Format{
         super(builder);
     }
 
-    public void buildVintageLegalSetsList(List<Set> list){
-        for(Set set: list){
-            if(!set.getSetType().equalsIgnoreCase("Un")){
-                vintageLegalSets.add(set);
+    public void buildVintageLegalSetsList(List<MtgSet> list){
+        for(MtgSet mtgSet : list){
+            if(!mtgSet.getMtgSetType().equalsIgnoreCase("Un")){
+                vintageLegalMtgSets.add(mtgSet);
             }
         }
     }
@@ -89,7 +89,7 @@ public class VintageFormat extends Format{
 
     public Format buildVintageFormat(){
         builder.setFormatName("Vintage")
-                .setLegalSets(vintageLegalSets)
+                .setLegalSets(vintageLegalMtgSets)
                 .setBannedList(vintageBannedList)
                 .setRestrictedList(vintageRestrictedList)
                 .build();

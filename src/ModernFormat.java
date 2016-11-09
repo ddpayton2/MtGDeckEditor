@@ -1,3 +1,4 @@
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import java.time.LocalDate;
@@ -5,8 +6,8 @@ import java.util.List;
 
 public class ModernFormat extends Format{
 
-    private final List<Set> modernLegalSets = Lists.newArrayList();
-    private final List<Card> modernBannedList = Lists.newArrayList();
+    private final List<MtgSet> modernLegalMtgSets = Lists.newArrayList();
+    private final ImmutableList<Card> modernBannedList = ImmutableList.of();
     private final List<Card> modernRestrictedList = Lists.newArrayList();
     private Format.Builder builder = new Format.Builder();
 
@@ -14,13 +15,13 @@ public class ModernFormat extends Format{
         super(builder);
     }
 
-    public void buildModernLegalSetsList(List<Set> list){
+    public void buildModernLegalSetsList(List<MtgSet> list){
         LocalDate eighthEdReleaseDate = LocalDate.of(2003,7,28);
-        for(Set set: list){
-            if((set.getReleaseDate().isEqual(eighthEdReleaseDate) && (set.getSetType().equalsIgnoreCase("Expansion")
-                    || set.getSetType().equalsIgnoreCase("Core"))) || (set.getReleaseDate().isAfter(eighthEdReleaseDate)
-                    && (set.getSetType().equalsIgnoreCase("Expansion"))||set.getSetType().equalsIgnoreCase("Core"))){
-                modernLegalSets.add(set);
+        for(MtgSet mtgSet : list){
+            if((mtgSet.getReleaseDate().isEqual(eighthEdReleaseDate) && (mtgSet.getMtgSetType().equalsIgnoreCase("Expansion")
+                    || mtgSet.getMtgSetType().equalsIgnoreCase("Core"))) || (mtgSet.getReleaseDate().isAfter(eighthEdReleaseDate)
+                    && (mtgSet.getMtgSetType().equalsIgnoreCase("Expansion"))|| mtgSet.getMtgSetType().equalsIgnoreCase("Core"))){
+                modernLegalMtgSets.add(mtgSet);
             }
         }
     }
@@ -67,7 +68,7 @@ public class ModernFormat extends Format{
 
     public Format buildModernFormat(){
         builder.setFormatName("Modern")
-                .setLegalSets(modernLegalSets)
+                .setLegalSets(modernLegalMtgSets)
                 .setBannedList(modernBannedList)
                 .setRestrictedList(modernRestrictedList)
                 .build();

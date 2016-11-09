@@ -1,5 +1,4 @@
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runners.Parameterized;
 import org.xml.sax.SAXException;
@@ -18,12 +17,12 @@ public class ModernFormatTests {
 
     private static final SAXParserFactory factory = SAXParserFactory.newInstance();
     private static final CardSetHandler reader = new CardSetHandler();
-    private static List<Set> allSetsList;
+    private static List<MtgSet> allSetsList;
     private static final Format.Builder builder = new Format.Builder();
     private static final ModernFormat modernFormat = new ModernFormat(builder);
     private static Format modern = new Format(builder);
     private static final SetSorter sorter = new SetSorter();
-    private static final List<Set> modernLegalSets = modern.getLegalSets();
+    private static final List<MtgSet> MODERN_LEGAL_MTG_SETs = modern.getLegalSets();
     private LocalDate eighthEditionReleaseDate = LocalDate.of(2003,7,28);
 
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {
@@ -44,7 +43,7 @@ public class ModernFormatTests {
         setUp();
         return Arrays.asList(new Object[][]{
                 {"Modern", modern.getFormatName()},
-                {modernLegalSets.get(6).getReleaseDate()}
+                {MODERN_LEGAL_MTG_SETs.get(6).getReleaseDate()}
         });
     }
 
@@ -54,12 +53,8 @@ public class ModernFormatTests {
     @Parameterized.Parameter(value = 1)
     private String actualName;
 
-    @Parameterized.Parameter
-    private LocalDate setDate;
-
     @Test
     public void modernFormatTests (){
         Assert.assertEquals(expectedName, actualName);
-        Assert.assertTrue(setDate.isEqual(eighthEditionReleaseDate) || setDate.isAfter(eighthEditionReleaseDate));
     }
 }

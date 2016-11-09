@@ -6,26 +6,27 @@ import java.util.Stack;
 @SuppressWarnings("WeakerAccess")
 public class StandardFormat extends Format{
 
-    private final List<Set> standardLegalSets = Lists.newArrayList();
+    private final List<MtgSet> standardLegalMtgSets = Lists.newArrayList();
     private final List<Card> standardBannedList = Lists.newArrayList();
     private final List<Card> standardRestrictedList = Lists.newArrayList();
     private Format.Builder builder = new Format.Builder();
+    private int currentNumberOfStandardLegalMTGSets = 5;
 
     public StandardFormat(Builder builder) {
         super(builder);
     }
 
-    public void buildStandardLegalSetsList(List<Set> allSets){
-        Stack<Set> stack = new Stack<>();
-        allSets.stream().filter(set -> set.getSetType().equalsIgnoreCase("Expansion") || set.getSetType().equalsIgnoreCase("Core")).forEach(stack::push);
-        for(int i = 0; i < 5; i++){
-            standardLegalSets.add(stack.pop());
+    public void buildStandardLegalSetsList(List<MtgSet> allMtgSets){ // This method gets the 5 most current Expansion/Core MTG Sets and stores them in a list
+        Stack<MtgSet> stack = new Stack<>();
+        allMtgSets.stream().filter(set -> set.getMtgSetType().equalsIgnoreCase("Expansion") || set.getMtgSetType().equalsIgnoreCase("Core")).forEach(stack::push);
+        for(int i = 0; i < currentNumberOfStandardLegalMTGSets; i++){
+            standardLegalMtgSets.add(stack.pop());
         }
     }
 
     public Format buildStandardFormat(){
         builder.setFormatName("Standard")
-                .setLegalSets(standardLegalSets)
+                .setLegalSets(standardLegalMtgSets)
                 .setBannedList(standardBannedList)
                 .setRestrictedList(standardRestrictedList)
                 .build();

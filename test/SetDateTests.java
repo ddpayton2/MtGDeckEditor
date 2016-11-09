@@ -21,7 +21,7 @@ public class SetDateTests {
 
     private static final SAXParserFactory factory = SAXParserFactory.newInstance();
     private static final CardSetHandler reader = new CardSetHandler();
-    private static List<Set> allSetsList;
+    private static List<MtgSet> allSetsList;
 
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {
         InputStream inputStream = CardSetHandlerTests.class.getResourceAsStream("cards.xml");

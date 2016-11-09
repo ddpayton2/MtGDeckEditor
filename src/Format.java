@@ -5,7 +5,7 @@ public class Format {
 
     public static final class Builder{
         private String formatName;
-        private List<Set> legalSets;
+        private List<MtgSet> legalMtgSets;
         private List<Card> bannedList;
         private List<Card> restrictedList;
 
@@ -14,8 +14,8 @@ public class Format {
             return this;
         }
 
-        public Builder setLegalSets(List<Set> list){
-            this.legalSets = list;
+        public Builder setLegalSets(List<MtgSet> list){
+            this.legalMtgSets = list;
             return this;
         }
 
@@ -35,19 +35,19 @@ public class Format {
     }
 
     private final String formatName;
-    private final List<Set> legalSets;
+    private final List<MtgSet> legalMtgSets;
     private final List<Card> bannedList;
     private final List<Card> restrictedList;
 
     public Format(Builder builder){
         this.formatName = builder.formatName;
-        this.legalSets = builder.legalSets;
+        this.legalMtgSets = builder.legalMtgSets;
         this.bannedList = builder.bannedList;
         this.restrictedList = builder.restrictedList;
     }
 
-    public List<Set> getLegalSets(){
-        return this.legalSets;
+    public List<MtgSet> getLegalSets(){
+        return this.legalMtgSets;
     }
 
     public List<Card> getBannedList(){

@@ -16,7 +16,7 @@ public class StandardFormatTests{
 
     private static final SAXParserFactory factory = SAXParserFactory.newInstance();
     private static final CardSetHandler reader = new CardSetHandler();
-    private List<Set> allSetsList;
+    private List<MtgSet> allSetsList;
     private final Format.Builder builder = new Format.Builder();
     private final StandardFormat standardFormat = new StandardFormat(builder);
     private Format standard = new Format(builder);
@@ -38,11 +38,11 @@ public class StandardFormatTests{
 
     @Test
     public void testStandardLegalSets(){
-        List<Set> standardLegalSets = Lists.newArrayList();
-        standardLegalSets.addAll(allSetsList.stream().filter(set -> set.getSetName().equalsIgnoreCase("BFZ") || set.getSetName().equalsIgnoreCase("OGW") ||
-                set.getSetName().equalsIgnoreCase("SOI") || set.getSetName().equalsIgnoreCase("EMN") ||
-                set.getSetName().equalsIgnoreCase("KLD")).collect(Collectors.toList()));
-        Assert.assertTrue(standard.getLegalSets().containsAll(standardLegalSets));
+        List<MtgSet> standardLegalMtgSets = Lists.newArrayList();
+        standardLegalMtgSets.addAll(allSetsList.stream().filter(set -> set.getMtgSetName().equalsIgnoreCase("BFZ") || set.getMtgSetName().equalsIgnoreCase("OGW") ||
+                set.getMtgSetName().equalsIgnoreCase("SOI") || set.getMtgSetName().equalsIgnoreCase("EMN") ||
+                set.getMtgSetName().equalsIgnoreCase("KLD")).collect(Collectors.toList()));
+        Assert.assertTrue(standard.getLegalSets().containsAll(standardLegalMtgSets));
     }
 
     @Test

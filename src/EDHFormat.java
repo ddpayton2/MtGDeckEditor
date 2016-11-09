@@ -4,7 +4,7 @@ import java.util.List;
 
 public class EDHFormat extends Format{
 
-    private final List<Set> EDHLegalSets = Lists.newArrayList();
+    private final List<MtgSet> EDHLegalMtgSets = Lists.newArrayList();
     private final List<Card> EDHBannedList = Lists.newArrayList();
     private final List<Card> EDHRestrictedList = Lists.newArrayList();
     private Format.Builder builder = new Format.Builder();
@@ -13,10 +13,10 @@ public class EDHFormat extends Format{
         super(builder);
     }
 
-    public void buildEDHLegalSetList(List<Set> list){
-        for(Set set : list){
-            if(!set.getSetType().equalsIgnoreCase("Un")){
-                EDHLegalSets.add(set);
+    public void buildEDHLegalSetList(List<MtgSet> list){
+        for(MtgSet mtgSet : list){
+            if(!mtgSet.getMtgSetType().equalsIgnoreCase("Un")){
+                EDHLegalMtgSets.add(mtgSet);
             }
         }
     }
@@ -77,7 +77,7 @@ public class EDHFormat extends Format{
 
     public Format buildEDHFormat(){
         builder.setFormatName("EDH")
-                .setLegalSets(EDHLegalSets)
+                .setLegalSets(EDHLegalMtgSets)
                 .setBannedList(EDHBannedList)
                 .setRestrictedList(EDHRestrictedList)
                 .build();

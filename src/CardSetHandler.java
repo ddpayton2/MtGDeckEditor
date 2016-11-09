@@ -10,10 +10,10 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 class CardSetHandler extends DefaultHandler {
 
-    private Set set = new Set();
+    private MtgSet mtgSet = new MtgSet();
     private final StringBuilder builder = new StringBuilder();
     private String temp;
-    private final List<Set> allSetsList = Lists.newArrayList();
+    private final List<MtgSet> allSetsList = Lists.newArrayList();
 
     public class DoneParsingException extends SAXException{}
 
@@ -24,32 +24,32 @@ class CardSetHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         temp = "";
         if (qName.equalsIgnoreCase("set")) {
-            set = new Set();
+            mtgSet = new MtgSet();
         }
     }
 
     public void endElement(String uri, String localName, String qName) throws DoneParsingException {
         temp = builder.toString().trim();
         if(qName.equalsIgnoreCase("set")){
-            allSetsList.add(set);
+            allSetsList.add(mtgSet);
         }
         if(qName.equalsIgnoreCase("name")){
-            set.setSetName(temp);
+            mtgSet.setMtgSetName(temp);
         }
         else if(qName.equalsIgnoreCase("longname")){
-            set.setLongname(temp.replaceAll("\n", "").replaceAll("&quot;", "'").replaceAll("&#39;", "'"));
+            mtgSet.setLongname(temp.replaceAll("\n", "").replaceAll("&quot;", "'").replaceAll("&#39;", "'"));
         }
         else if(qName.equalsIgnoreCase("setType")){
-            set.setSetType(temp);
+            mtgSet.setMtgSetType(temp);
         }
         else if(qName.equalsIgnoreCase("releaseDate")){
             if(!temp.equalsIgnoreCase("")){
                 LocalDate date = LocalDate.parse(temp, DateTimeFormatter.ISO_LOCAL_DATE);
-                set.setReleaseDate(date);
+                mtgSet.setReleaseDate(date);
             }
             else{
                 LocalDate date = LocalDate.of(0, 1,31);
-                set.setReleaseDate(date);
+                mtgSet.setReleaseDate(date);
             }
         }
         else if(qName.equalsIgnoreCase("sets")){
@@ -58,7 +58,7 @@ class CardSetHandler extends DefaultHandler {
         builder.setLength(0);
     }
 
-    public List<Set> returnAllSetsList(){
+    public List<MtgSet> returnAllSetsList(){
         return this.allSetsList;
     }
 }

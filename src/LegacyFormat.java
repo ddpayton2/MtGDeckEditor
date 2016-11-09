@@ -4,7 +4,7 @@ import java.util.List;
 
 public class LegacyFormat extends Format {
 
-    private final List<Set> legacyLegalSets = Lists.newArrayList();
+    private final List<MtgSet> legacyLegalMtgSets = Lists.newArrayList();
     private final List<Card> legacyBannedList = Lists.newArrayList();
     private final List<Card> legacyRestrictedList = Lists.newArrayList();
     private Format.Builder builder = new Format.Builder();
@@ -13,10 +13,10 @@ public class LegacyFormat extends Format {
         super(builder);
     }
 
-    public void buildLegacyLegalSetsList(List<Set> list){
-        for(Set set: list){
-            if(!set.getSetType().equalsIgnoreCase("Un")){
-                legacyLegalSets.add(set);
+    public void buildLegacyLegalSetsList(List<MtgSet> list){
+        for(MtgSet mtgSet : list){
+            if(!mtgSet.getMtgSetType().equalsIgnoreCase("Un")){
+                legacyLegalMtgSets.add(mtgSet);
             }
         }
     }
@@ -86,7 +86,7 @@ public class LegacyFormat extends Format {
 
     public Format buildLegacyFormat(){
         builder.setFormatName("Legacy")
-                .setLegalSets(legacyLegalSets)
+                .setLegalSets(legacyLegalMtgSets)
                 .setBannedList(legacyBannedList)
                 .setRestrictedList(legacyRestrictedList)
                 .build();
