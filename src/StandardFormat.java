@@ -23,18 +23,11 @@ public class StandardFormat extends Format{
         }
     }
 
-    public List<Set> getStandardLegalSets(){
-        return this.standardLegalSets;
-    }
-
     public Format buildStandardFormat(){
-        Format.Builder builder = new Format.Builder();
-        builder.setFormatName()
+        builder.setFormatName("Standard")
                 .setLegalSets(standardLegalSets)
                 .setBannedList(standardBannedList)
                 .setRestrictedList(standardRestrictedList)
-                .setMaxNumberOfSideboardCards()
-                .setMinNumberOfMainCards()
                 .build();
         return new Format(builder);
     }

@@ -8,11 +8,9 @@ public class Format {
         private List<Set> legalSets;
         private List<Card> bannedList;
         private List<Card> restrictedList;
-        private int minNumberOfMainCards;
-        private int maxNumberOfSideboardCards;
 
-        public Builder setFormatName(){
-            this.formatName = "Standard";
+        public Builder setFormatName(String name){
+            this.formatName = name;
             return this;
         }
 
@@ -31,16 +29,6 @@ public class Format {
             return this;
         }
 
-        public Builder setMinNumberOfMainCards(){
-            this.minNumberOfMainCards = 60;
-            return this;
-        }
-
-        public Builder setMaxNumberOfSideboardCards(){
-            this.maxNumberOfSideboardCards = 15;
-            return this;
-        }
-
         public Format build(){
             return new Format(this);
         }
@@ -56,8 +44,6 @@ public class Format {
         this.legalSets = builder.legalSets;
         this.bannedList = builder.bannedList;
         this.restrictedList = builder.restrictedList;
-        int minNumberOfMainCards = builder.minNumberOfMainCards;
-        int maxNumberOfSideboardCards = builder.maxNumberOfSideboardCards;
     }
 
     public List<Set> getLegalSets(){

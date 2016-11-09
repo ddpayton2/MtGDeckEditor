@@ -42,7 +42,7 @@ public class StandardFormatTests{
         standardLegalSets.addAll(allSetsList.stream().filter(set -> set.getSetName().equalsIgnoreCase("BFZ") || set.getSetName().equalsIgnoreCase("OGW") ||
                 set.getSetName().equalsIgnoreCase("SOI") || set.getSetName().equalsIgnoreCase("EMN") ||
                 set.getSetName().equalsIgnoreCase("KLD")).collect(Collectors.toList()));
-        Assert.assertTrue(standardFormat.getStandardLegalSets().containsAll(standardLegalSets));
+        Assert.assertTrue(standard.getLegalSets().containsAll(standardLegalSets));
     }
 
     @Test
