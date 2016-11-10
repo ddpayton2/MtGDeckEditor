@@ -9,21 +9,29 @@ public class StandardFormat extends Format{
     private final List<MtgSet> standardLegalMtgSets = Lists.newArrayList();
     private final List<Card> standardBannedList = Lists.newArrayList();
     private final List<Card> standardRestrictedList = Lists.newArrayList();
-    private Format.Builder builder = new Format.Builder();
-    private int currentNumberOfStandardLegalMTGSets = 5;
+    private final Format.Builder builder = new Format.Builder();
 
     public StandardFormat(Builder builder) {
         super(builder);
     }
 
-    public void buildStandardLegalSetsList(List<MtgSet> allMtgSets){ // This method gets the 5 most current Expansion/Core MTG Sets and stores them in a list
+    /**
+     * Adds the latest five expansion and/or core sets to this StandardFormat
+     * @param allMtgSets a list of all Magic: the Gathering sets
+     */
+    public void buildStandardLegalSetsList(List<MtgSet> allMtgSets){
         Stack<MtgSet> stack = new Stack<>();
         allMtgSets.stream().filter(set -> set.getMtgSetType().equalsIgnoreCase("Expansion") || set.getMtgSetType().equalsIgnoreCase("Core")).forEach(stack::push);
+        int currentNumberOfStandardLegalMTGSets = 5;
         for(int i = 0; i < currentNumberOfStandardLegalMTGSets; i++){
             standardLegalMtgSets.add(stack.pop());
         }
     }
 
+    /**
+     * @return a Format that follows the standard format conventions set by Wizards of the Coast
+     * @see {{@link #StandardFormat(Builder)}}
+     */
     public Format buildStandardFormat(){
         builder.setFormatName("Standard")
                 .setLegalSets(standardLegalMtgSets)

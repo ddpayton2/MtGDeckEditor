@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
-class CardSetHandler extends DefaultHandler {
+class CardMtgSetHandler extends DefaultHandler {
 
     private MtgSet mtgSet = new MtgSet();
     private final StringBuilder builder = new StringBuilder();

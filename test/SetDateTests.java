@@ -20,7 +20,7 @@ import java.util.List;
 public class SetDateTests {
 
     private static final SAXParserFactory factory = SAXParserFactory.newInstance();
-    private static final CardSetHandler reader = new CardSetHandler();
+    private static final CardMtgSetHandler reader = new CardMtgSetHandler();
     private static List<MtgSet> allSetsList;
 
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {
@@ -29,7 +29,7 @@ public class SetDateTests {
         try{
             parser.parse(inputStream, reader);
         }
-        catch(CardSetHandler.DoneParsingException e){}
+        catch(CardMtgSetHandler.DoneParsingException e){}
         allSetsList = reader.returnAllSetsList();
     }
 

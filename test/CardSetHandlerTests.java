@@ -18,7 +18,7 @@ import java.util.List;
 public class CardSetHandlerTests {
 
     private static final SAXParserFactory factory = SAXParserFactory.newInstance();
-    private static final CardSetHandler reader = new CardSetHandler();
+    private static final CardMtgSetHandler reader = new CardMtgSetHandler();
     private static List<MtgSet> allSetsList;
 
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {

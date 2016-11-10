@@ -10,32 +10,43 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.EnumSet;
 
 public class UserInterface extends Application {
 
     private final TextField searchTermInputArea = new TextField();
-    private final TextArea cardListOutput = new TextArea();
+    private final ListView cardListOutput = new ListView();
     private final Button searchButton = new Button("Search");
+    private final TextArea cardInfo = new TextArea();
+
     private final ToggleButton whiteButton = new ToggleButton("W");
     private final ToggleButton blueButton = new ToggleButton("U");
     private final ToggleButton blackButton = new ToggleButton("B");
     private final ToggleButton redButton = new ToggleButton("R");
     private final ToggleButton greenButton = new ToggleButton("G");
     private final ToggleButton colorlessButton = new ToggleButton("C");
-    private final TextArea cardInfo = new TextArea();
-    private final ObservableList<String> formats =
+
+    private final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
+    private final UIController controller = new UIController();
+
+    private ObservableList<Card> cardObservableList = FXCollections.observableArrayList(
+            controller.getFullCardList()
+    );
+
+    private final ObservableList<Format> formats =
             FXCollections.observableArrayList(
-                    "Standard",
-                    "Modern",
-                    "Legacy",
-                    "Vintage",
-                    "Commander (EDH)"
+                    controller.getAllFormatList()
             );
+
+    private Format currentSelectedFormat;
+
     @SuppressWarnings("unchecked")
     private final ComboBox formatList = new ComboBox(formats);
-    private final UIController controller = new UIController();
+
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -43,24 +54,24 @@ public class UserInterface extends Application {
         primaryStage.setScene(createScene());
         primaryStage.show();
         try {
-            cardListOutput.setText(controller.setUpArray());
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+            controller.setUpListOfAllSets();
+            controller.setUpListOfAllCards();
+            controller.buildAllFormatList();
+            cardListOutput.setItems(cardObservableList);
+        } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
     }
 
     private Scene createScene() {
         cardListOutput.setEditable(false);
-        searchButton.setOnAction(event ->
-                displayCardsBySearchTerm()
-        );
 
         searchTermInputArea.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER){
-                    displayCardsBySearchTerm();
             }
         });
 
+        formatList.setOnAction(event -> chooseFormat());
         whiteButton.setOnAction(event -> displayFilteredByColorList());
         blueButton.setOnAction(event -> displayFilteredByColorList());
         blackButton.setOnAction(event -> displayFilteredByColorList());
@@ -102,42 +113,36 @@ public class UserInterface extends Application {
         return new Scene(base);
     }
 
-    private void displayCardsBySearchTerm() {
-        searchButton.disarm();
-        cardListOutput.clear();
-        controller.filteredCardArrayList.clear();
-        controller.searchForTerm(searchTermInputArea.getText());
-        displayFilteredByColorList();
+    private void chooseFormat(){
+        currentSelectedFormat = (Format)formatList.getSelectionModel().getSelectedItem();
     }
 
     private void displayFilteredByColorList(){
-        String filterColors = "";
-
         if (whiteButton.isSelected() || blueButton.isSelected() || blackButton.isSelected()
                 || redButton.isSelected() || greenButton.isSelected()) {
+            if(selectedColors.contains(CardColor.EMPTY)){
+                selectedColors.remove(CardColor.EMPTY);
+            }
             if (whiteButton.isSelected()) {
-                filterColors = filterColors + "W";
+                selectedColors.add(CardColor.WHITE);
             }
             if (blueButton.isSelected()) {
-                filterColors = filterColors + "U";
+                selectedColors.add(CardColor.BLUE);
             }
             if (blackButton.isSelected()) {
-                filterColors = filterColors + "B";
+                selectedColors.add(CardColor.BLACK);
             }
             if (redButton.isSelected()) {
-                filterColors = filterColors + "R";
+                selectedColors.add(CardColor.RED);
             }
             if (greenButton.isSelected()) {
-                filterColors = filterColors + "G";
+                selectedColors.add(CardColor.GREEN);
             }
-
+            if (colorlessButton.isSelected()){
+                selectedColors.add(CardColor.COLORLESS);
+            }
         }
-
-        if (colorlessButton.isSelected()){
-            controller.filterForColorless();
-        }
-        controller.filterByMoreThanOneColor(filterColors);
-        cardListOutput.setText(controller.showColorFilteredList());
+        controller.filterByColor(selectedColors);
     }
 }
 

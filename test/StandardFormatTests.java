@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class StandardFormatTests{
 
     private static final SAXParserFactory factory = SAXParserFactory.newInstance();
-    private static final CardSetHandler reader = new CardSetHandler();
+    private static final CardMtgSetHandler reader = new CardMtgSetHandler();
     private List<MtgSet> allSetsList;
     private final Format.Builder builder = new Format.Builder();
     private final StandardFormat standardFormat = new StandardFormat(builder);

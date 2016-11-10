@@ -29,6 +29,7 @@ public class Format {
             return this;
         }
 
+        @SuppressWarnings("UnusedReturnValue")
         public Format build(){
             return new Format(this);
         }

@@ -1,13 +1,14 @@
+import java.util.Collection;
+import java.util.EnumSet;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Card {
 
     private String cardName;
-    @SuppressWarnings("WeakerAccess")
-    public String cardColor;
     private String cardCost;
     private String cardType;
     private String cardText;
+    private EnumSet<CardColor> cardColors = EnumSet.of(CardColor.COLORLESS);
 
     public String getCardName() {
         return cardName;
@@ -17,12 +18,17 @@ public class Card {
         this.cardName = cardName;
     }
 
-    public String getCardColor() {
-        return cardColor;
+    public void addCardColor(CardColor color){
+        cardColors.add(color);
+        cardColors.remove(CardColor.COLORLESS);
     }
 
-    public void setCardColor(String color){
-        this.cardColor = color;
+    public boolean containsAllColors(Collection<CardColor> colors){
+        return cardColors.containsAll(colors);
+    }
+
+    public boolean containsCardColor(CardColor color){
+        return cardColors.contains(color);
     }
 
     public String getCardCost(){

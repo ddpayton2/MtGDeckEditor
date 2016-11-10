@@ -31,24 +31,17 @@ public class CardHandlerTests {
     @Parameterized.Parameters
     public static Collection<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
         setUp();
+        Card testCard = findTestCard("Emrakul, the Promised End");
+        Card testCard_2 = findTestCard("Vorel of the Hull Clade");
+        assert testCard != null;
         return Arrays.asList(new Object[][]{
-                {"Kor Line-Slinger", allCardList.get(0).getCardName()},
-                {"Rhox Pikemaster", allCardList.get(2).getCardName()},
-                {"Pang Tong, \"Young Phoenix\"", allCardList.get(7).getCardName()},
-                {"W", allCardList.get(0).getCardColor()},
-                {"B", allCardList.get(9).getCardColor()},
-                {"C", allCardList.get(4).getCardColor()},
-                {"4B", allCardList.get(9).getCardCost()},
-                {"9", allCardList.get(4).getCardCost()},
-                {"Creature — Eldrazi", allCardList.get(4).getCardType()},
-                {"Land", allCardList.get(5).getCardType()},
-                {"Spawning Pool enters the battlefield tapped." +
-                        "{T}: Add {B} to your mana pool." +
-                        "{1}{B}: Spawning Pool becomes a 1/1 black Skeleton creature with \"{B}: Regenerate this creature\" until end of turn. " +
-                        "It's still a land. (If it regenerates, the next time it would be destroyed this turn, it isn't. " +
-                        "Instead tap it, remove all damage from it, and remove it from combat.)", allCardList.get(5).getCardText()},
-                {"Level up {4} ({4}: Put a level counter on this. Level up only as a sorcery.)" +
-                "LEVEL 1-3" + "2/6" + "Vigilance" + "LEVEL 4+" + "3/10" + "Vigilance", allCardList.get(3).getCardText()},
+                {"Emrakul, the Promised End", testCard.getCardName()},
+                //{false, testCard.containsCardColor(CardColor.RED)},
+                {"13", testCard.getCardCost()},
+                {"Legendary Creature — Eldrazi", testCard.getCardType()},
+                {"Emrakul, the Promised End costs {1} less to cast for each card type among cards in your graveyard.  \n" +
+                        "When you cast Emrakul, you gain control of target opponent during that player's next turn. After that turn, that player takes an extra turn.\n" +
+                        "Flying, trample, protection from instants", testCard.getCardText()}
         });
     }
 
@@ -61,5 +54,19 @@ public class CardHandlerTests {
     @Test
     public void CardHandlerTest(){
         Assert.assertEquals(expected, actual);
+    }
+
+    /**
+     * finds a specific card to use for tests
+     * @param cardName the name of the card
+     * @return a card with the name that matches cardName, null otherwise
+     */
+    private static Card findTestCard(String cardName){
+        for(Card card : allCardList){
+            if(card.getCardName().equalsIgnoreCase(cardName)){
+                return card;
+            }
+        }
+        return null;
     }
 }

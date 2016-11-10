@@ -22,7 +22,7 @@ public class SetSorterTests {
         InputStream inputStream = SetSorterTests.class.getResourceAsStream("cards.xml");
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
-        CardSetHandler handler = new CardSetHandler();
+        CardMtgSetHandler handler = new CardMtgSetHandler();
         try{
             parser.parse(inputStream, handler);
         } catch(SAXException s){

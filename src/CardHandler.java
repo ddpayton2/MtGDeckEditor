@@ -35,12 +35,12 @@ public class CardHandler extends DefaultHandler{
             card.setCardName(temp);
         }
         else if (qName.equalsIgnoreCase("color")) {
-            card.setCardColor(temp);
+            CardColor color = CardColor.parse(temp);
+            if(color != null){
+                card.addCardColor(color);
+            }
         }
         else if(qName.equalsIgnoreCase("manacost")){
-            if(!temp.contains("W" )&& !temp.contains("U") && !temp.contains("B") && !temp.contains("R") && !temp.contains("G")){
-                card.setCardColor("C");
-            }
             card.setCardCost(temp);
         }
         else if(qName.equalsIgnoreCase("type")){

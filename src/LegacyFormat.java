@@ -1,24 +1,22 @@
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class LegacyFormat extends Format {
 
     private final List<MtgSet> legacyLegalMtgSets = Lists.newArrayList();
     private final List<Card> legacyBannedList = Lists.newArrayList();
     private final List<Card> legacyRestrictedList = Lists.newArrayList();
-    private Format.Builder builder = new Format.Builder();
+    private final Format.Builder builder = new Format.Builder();
 
     public LegacyFormat(Builder builder) {
         super(builder);
     }
 
     public void buildLegacyLegalSetsList(List<MtgSet> list){
-        for(MtgSet mtgSet : list){
-            if(!mtgSet.getMtgSetType().equalsIgnoreCase("Un")){
-                legacyLegalMtgSets.add(mtgSet);
-            }
-        }
+        legacyLegalMtgSets.addAll(list.stream().filter(mtgSet -> !mtgSet.getMtgSetType().equalsIgnoreCase("Un")).collect(Collectors.toList()));
     }
 
     public void buildLegacyBannedList(List<Card> allCardList){

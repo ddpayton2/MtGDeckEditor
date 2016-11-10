@@ -1,24 +1,22 @@
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class EDHFormat extends Format{
 
     private final List<MtgSet> EDHLegalMtgSets = Lists.newArrayList();
     private final List<Card> EDHBannedList = Lists.newArrayList();
     private final List<Card> EDHRestrictedList = Lists.newArrayList();
-    private Format.Builder builder = new Format.Builder();
+    private final Format.Builder builder = new Format.Builder();
 
     public EDHFormat(Builder builder) {
         super(builder);
     }
 
     public void buildEDHLegalSetList(List<MtgSet> list){
-        for(MtgSet mtgSet : list){
-            if(!mtgSet.getMtgSetType().equalsIgnoreCase("Un")){
-                EDHLegalMtgSets.add(mtgSet);
-            }
-        }
+        EDHLegalMtgSets.addAll(list.stream().filter(mtgSet -> !mtgSet.getMtgSetType().equalsIgnoreCase("Un")).collect(Collectors.toList()));
     }
 
     public void buildEDHBannedList(List<Card> allCardsList){
@@ -53,7 +51,7 @@ public class EDHFormat extends Format{
                     || card.getCardName().equalsIgnoreCase("Mox Sapphire")
                     || card.getCardName().equalsIgnoreCase("Painter's Servant")
                     || card.getCardName().equalsIgnoreCase("Panoptic Mirror")
-                    || card.getCardName().equalsIgnoreCase("Primeval Titna")
+                    || card.getCardName().equalsIgnoreCase("Primeval Titan")
                     || card.getCardName().equalsIgnoreCase("Prophet of Kruphix")
                     || card.getCardName().equalsIgnoreCase("Protean Hulk")
                     || card.getCardName().equalsIgnoreCase("Recurring Nightmare")
