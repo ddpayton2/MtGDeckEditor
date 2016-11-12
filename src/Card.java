@@ -1,5 +1,8 @@
+import com.google.common.collect.Lists;
+
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Card {
@@ -8,6 +11,8 @@ public class Card {
     private String cardCost;
     private String cardType;
     private String cardText;
+    private String pt;
+    private List<String> setsPrintedIn = Lists.newArrayList();
     private EnumSet<CardColor> cardColors = EnumSet.of(CardColor.COLORLESS);
 
     public String getCardName() {
@@ -53,5 +58,29 @@ public class Card {
 
     public void setCardText(String text){
         this.cardText = text;
+    }
+
+    public void setPT(String pt){
+        this.pt = pt;
+    }
+
+    public String getPt(){
+        if(this.pt != null){
+            return this.pt;
+        }
+        return "";
+    }
+
+    public void addMtgSet(String mtgSet){
+        setsPrintedIn.add(mtgSet);
+    }
+
+    public List<String> getSetsPrintedIn(){
+        return this.setsPrintedIn;
+    }
+    public String getAllCardInfo(){
+        return this.cardName + "\t" + this.getCardCost() + "\n" + "\n"
+                + this.getCardType() + "\n" + this.getCardText() + "\n" + this.getPt()
+                +"\n" + this.setsPrintedIn;
     }
 }

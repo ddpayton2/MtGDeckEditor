@@ -36,7 +36,6 @@ public class CardHandlerTests {
         assert testCard != null;
         return Arrays.asList(new Object[][]{
                 {"Emrakul, the Promised End", testCard.getCardName()},
-                //{false, testCard.containsCardColor(CardColor.RED)},
                 {"13", testCard.getCardCost()},
                 {"Legendary Creature — Eldrazi", testCard.getCardType()},
                 {"Emrakul, the Promised End costs {1} less to cast for each card type among cards in your graveyard.  \n" +

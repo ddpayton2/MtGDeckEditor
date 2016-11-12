@@ -49,6 +49,12 @@ public class CardHandler extends DefaultHandler{
         else if(qName.equalsIgnoreCase("text")){
             card.setCardText(temp.replaceAll("\n", "").replaceAll("&quot;", "'").replaceAll("&#39;", "'"));
         }
+        else if(qName.equalsIgnoreCase("pt")){
+            card.setPT(temp);
+        }
+        else if(qName.equalsIgnoreCase("set")){
+            card.addMtgSet(temp);
+        }
         builder.setLength(0);
     }
 

@@ -1,4 +1,6 @@
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 public class Format {
@@ -37,6 +39,7 @@ public class Format {
 
     private final String formatName;
     private final List<MtgSet> legalMtgSets;
+    private final List<String> legalMtgSetsNames = Lists.newArrayList();
     private final List<Card> bannedList;
     private final List<Card> restrictedList;
 
@@ -45,6 +48,9 @@ public class Format {
         this.legalMtgSets = builder.legalMtgSets;
         this.bannedList = builder.bannedList;
         this.restrictedList = builder.restrictedList;
+        for(MtgSet set : legalMtgSets){
+            legalMtgSetsNames.add(set.getMtgSetName());
+        }
     }
 
     public List<MtgSet> getLegalSets(){
@@ -61,5 +67,9 @@ public class Format {
 
     public String getFormatName(){
         return this.formatName;
+    }
+
+    public List<String> getLegalMtgSetsNames(){
+        return this.legalMtgSetsNames;
     }
 }
