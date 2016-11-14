@@ -17,7 +17,7 @@ public class UIController {
     private List<MtgSet> fullMtgSetList;
     private final Format.Builder formatBuilder = new Format.Builder();
     private final CardFilter filter = new CardFilter();
-
+    private final ObservableList<Card> formatCardList = FXCollections.observableArrayList();
     public void setUpListOfAllCards() throws IOException, SAXException {
         SAXParserFactory spfac = SAXParserFactory.newInstance();
         SAXParser sp = null;
@@ -45,8 +45,7 @@ public class UIController {
             assert parser != null;
             parser.parse("cards.xml",mtgSetHandler);
         }
-        catch (CardMtgSetHandler.DoneParsingException e){
-            e.printStackTrace();
+        catch (CardMtgSetHandler.DoneParsingException ignored){
         }
         fullMtgSetList = mtgSetHandler.returnAllSetsList();
     }
@@ -101,7 +100,7 @@ public class UIController {
     }
 
     public ObservableList<Card> retrieveLegalCardsForFormat(Format format) {
-        ObservableList<Card> formatCardList = FXCollections.observableArrayList();
+        formatCardList.clear();
         filter.filterByFormat(fullCardList, format);
         formatCardList.addAll(filter.getCardFormatList());
         Collections.sort(formatCardList);

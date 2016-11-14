@@ -33,6 +33,7 @@ public class CardFilter {
     }
 
     public void filterByFormat(List<Card> list, Format format) {
+        cardFormatList.clear();
         for(String mtgSetName : format.getLegalMtgSetsNames()){
             for(Card card : list){
                 cardFormatList.addAll(card.getSetsPrintedIn().stream().filter(cardMtgSetName -> cardMtgSetName.equalsIgnoreCase(mtgSetName)).map(cardMtgSetName -> card).collect(Collectors.toList()));
