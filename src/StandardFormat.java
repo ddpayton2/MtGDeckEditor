@@ -11,7 +11,7 @@ public class StandardFormat extends Format{
     private final List<Card> standardRestrictedList = Lists.newArrayList();
     private final Format.Builder builder = new Format.Builder();
 
-    public StandardFormat(Builder builder) {
+    public StandardFormat(Format.Builder builder) {
         super(builder);
     }
 
@@ -32,6 +32,7 @@ public class StandardFormat extends Format{
      * @return a Format that follows the standard format conventions set by Wizards of the Coast
      * @see {{@link #StandardFormat(Builder)}}
      */
+    @SuppressWarnings("JavaDoc")
     public Format buildStandardFormat(){
         builder.setFormatName("Standard")
                 .setLegalSets(standardLegalMtgSets)

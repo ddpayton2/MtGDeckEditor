@@ -1,19 +1,20 @@
 import com.google.common.collect.Lists;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class Card {
+public class Card implements Comparable<Card>{
 
     private String cardName;
     private String cardCost;
     private String cardType;
     private String cardText;
     private String pt;
-    private List<String> setsPrintedIn = Lists.newArrayList();
-    private EnumSet<CardColor> cardColors = EnumSet.of(CardColor.COLORLESS);
+    private final List<String> setsPrintedIn = Lists.newArrayList();
+    private final EnumSet<CardColor> cardColors = EnumSet.of(CardColor.COLORLESS);
 
     public String getCardName() {
         return cardName;
@@ -78,9 +79,15 @@ public class Card {
     public List<String> getSetsPrintedIn(){
         return this.setsPrintedIn;
     }
+
     public String getAllCardInfo(){
         return this.cardName + "\t" + this.getCardCost() + "\n" + "\n"
                 + this.getCardType() + "\n" + this.getCardText() + "\n" + this.getPt()
                 +"\n" + this.setsPrintedIn;
+    }
+
+    @Override
+    public int compareTo(@NotNull Card o) {
+        return (this.getCardName().compareTo(o.getCardName()));
     }
 }

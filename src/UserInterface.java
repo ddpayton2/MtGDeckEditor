@@ -13,12 +13,13 @@ import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.EnumSet;
 
 public class UserInterface extends Application {
 
     private final TextField searchTermInputArea = new TextField();
-    private final ListView <Card> cardListOutput = new ListView<>();
+    private final ListView<Card> cardListOutput = new ListView<>();
     private final Button searchButton = new Button("Search");
     private final TextArea cardInfo = new TextArea();
 
@@ -28,18 +29,18 @@ public class UserInterface extends Application {
     private final ToggleButton redButton = new ToggleButton("R");
     private final ToggleButton greenButton = new ToggleButton("G");
     private final ToggleButton colorlessButton = new ToggleButton("C");
+    private final Button resetButton = new Button("Reset");
+    private final Button standardFormatButton = new Button("Standard");
+    private final Button modernFormatButton = new Button("Modern");
+    private final Button legacyFormatButton = new Button("Legacy");
+    private final Button vintageFormatButton = new Button("Vintage");
+    private final Button edhFormatButton = new Button("Commander (EDH)");
 
     private final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
     private final UIController controller = new UIController();
 
-    private ObservableList<Card> cardObservableList = FXCollections.observableArrayList();
-    private ObservableList<Card> filteredList = FXCollections.observableArrayList();
-    private ObservableList<Format> formats =  FXCollections.observableArrayList();
-
-    private Format currentSelectedFormat;
-
-    @SuppressWarnings("unchecked")
-    private ComboBox formatList = new ComboBox(formats);
+    private final ObservableList<Card> cardObservableList = FXCollections.observableArrayList();
+    private final ObservableList<Card> filteredList = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage primaryStage) {
@@ -49,12 +50,21 @@ public class UserInterface extends Application {
         try {
             controller.setUpListOfAllSets();
             controller.setUpListOfAllCards();
-            controller.buildAllFormatList();
             cardObservableList.addAll(controller.getFullCardList());
+            Collections.sort(cardObservableList);
             cardListOutput.setItems(cardObservableList);
-            for(int i = 0; i < 5; i++){
-                formats.add(controller.buildAllFormatList().get(i));
-            }
+            cardListOutput.setCellFactory(lv -> new ListCell<Card>(){
+                @Override
+                public void updateItem(Card card, boolean empty){
+                    super.updateItem(card, empty);
+                    if(empty){
+                        setText(null);
+                    }
+                    else{
+                        setText(card.getCardName());
+                    }
+                }
+            });
         } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
@@ -70,23 +80,25 @@ public class UserInterface extends Application {
         });
 
         searchButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        formatList.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         whiteButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         blueButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         blackButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         redButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         greenButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         colorlessButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        resetButton.setOnAction(event -> resetAllOutputFields());
+        standardFormatButton.setOnAction(event -> chooseFormat(controller.buildStandardFormat()));
+        modernFormatButton.setOnAction(event -> chooseFormat(controller.buildModernFormat()));
+        legacyFormatButton.setOnAction(event -> chooseFormat(controller.buildLegacyFormat()));
+        vintageFormatButton.setOnAction(event -> chooseFormat(controller.buildVintageFormat()));
+        edhFormatButton.setOnAction(event -> chooseFormat(controller.buildEDHFormat()));
 
-        cardListOutput.setOnMousePressed((new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                cardInfo.setWrapText(true);
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    cardInfo.clear();
-                    cardInfo.setText(cardListOutput.getSelectionModel().getSelectedItem()
-                    .getAllCardInfo());
-                }
+        cardListOutput.setOnMousePressed((event -> {
+            cardInfo.setWrapText(true);
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 1){
+                cardInfo.clear();
+                cardInfo.setText(cardListOutput.getSelectionModel().getSelectedItem()
+                .getAllCardInfo());
             }
         }));
 
@@ -94,6 +106,7 @@ public class UserInterface extends Application {
                         new Label("Enter Search Term"),
                         searchTermInputArea,
                         searchButton,
+                        resetButton,
                         new HBox(whiteButton, blueButton, blackButton, redButton, greenButton, colorlessButton),
                         new Label("Cards"),
                         cardListOutput
@@ -111,7 +124,11 @@ public class UserInterface extends Application {
 
         VBox formatBox = new VBox(
                 new Label("Format"),
-                new VBox(formatList)
+                standardFormatButton,
+                modernFormatButton,
+                legacyFormatButton,
+                vintageFormatButton,
+                edhFormatButton
         );
 
         formatBox.setAlignment(Pos.TOP_RIGHT);
@@ -124,8 +141,18 @@ public class UserInterface extends Application {
         return new Scene(base);
     }
 
+    private void resetAllOutputFields() {
+        searchTermInputArea.clear();
+        cardInfo.clear();
+        whiteButton.setSelected(false);
+        blueButton.setSelected(false);
+        redButton.setSelected(false);
+        blackButton.setSelected(false);
+        greenButton.setSelected(false);
+        cardListOutput.setItems(cardObservableList);
+    }
+
     private void useAllFilters(String term) {
-        chooseFormat();
         searchForTerm(term);
         displayFilteredByColorList();
     }
@@ -134,9 +161,8 @@ public class UserInterface extends Application {
         cardListOutput.setItems(FXCollections.observableArrayList(controller.search(text)));
     }
 
-    private void chooseFormat(){
-        currentSelectedFormat = (Format)formatList.getSelectionModel().getSelectedItem();
-        controller.retrieveLegalCardsForFormat(currentSelectedFormat);
+    private void chooseFormat(Format format){
+        cardListOutput.setItems(controller.retrieveLegalCardsForFormat(format));
     }
 
     private void displayFilteredByColorList(){

@@ -1,10 +1,12 @@
-import com.google.common.collect.Lists;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -13,9 +15,8 @@ public class UIController {
 
     private List<Card> fullCardList;
     private List<MtgSet> fullMtgSetList;
-    private Format.Builder formatBuilder = new Format.Builder();
-    private List<Format> formatList = Lists.newArrayList();
-    private CardFilter filter = new CardFilter();
+    private final Format.Builder formatBuilder = new Format.Builder();
+    private final CardFilter filter = new CardFilter();
 
     public void setUpListOfAllCards() throws IOException, SAXException {
         SAXParserFactory spfac = SAXParserFactory.newInstance();
@@ -26,6 +27,7 @@ public class UIController {
             e.printStackTrace();
         }
         CardHandler handler = new CardHandler();
+        assert sp != null;
         sp.parse("cards.xml", handler);
         fullCardList = handler.getCardList();
     }
@@ -40,34 +42,36 @@ public class UIController {
         }
         CardMtgSetHandler mtgSetHandler = new CardMtgSetHandler();
         try{
+            assert parser != null;
             parser.parse("cards.xml",mtgSetHandler);
         }
         catch (CardMtgSetHandler.DoneParsingException e){
+            e.printStackTrace();
         }
         fullMtgSetList = mtgSetHandler.returnAllSetsList();
     }
 
-    private Format buildStandardFormat(){
+    public Format buildStandardFormat(){
         StandardFormat standardFormat = new StandardFormat(formatBuilder);
         standardFormat.buildStandardLegalSetsList(fullMtgSetList);
         return standardFormat.buildStandardFormat();
     }
 
-    private Format buildModernFormat(){
+    public Format buildModernFormat(){
         ModernFormat modernFormat = new ModernFormat(formatBuilder);
         modernFormat.buildModernLegalSetsList(fullMtgSetList);
         modernFormat.buildModernBannedList(fullCardList);
         return modernFormat.buildModernFormat();
     }
 
-    private Format buildLegacyFormat(){
+    public Format buildLegacyFormat(){
         LegacyFormat legacyFormat = new LegacyFormat(formatBuilder);
         legacyFormat.buildLegacyLegalSetsList(fullMtgSetList);
         legacyFormat.buildLegacyBannedList(fullCardList);
         return legacyFormat.buildLegacyFormat();
     }
 
-    private Format buildVintageFormat() {
+    public Format buildVintageFormat() {
         VintageFormat vintageFormat = new VintageFormat(formatBuilder);
         vintageFormat.buildVintageLegalSetsList(fullMtgSetList);
         vintageFormat.buildVintageBannedList(fullCardList);
@@ -75,20 +79,11 @@ public class UIController {
         return vintageFormat.buildVintageFormat();
     }
 
-    private Format buildEDHFormat(){
+    public Format buildEDHFormat(){
         EDHFormat edhFormat = new EDHFormat(formatBuilder);
         edhFormat.buildEDHLegalSetList(fullMtgSetList);
         edhFormat.buildEDHBannedList(fullCardList);
         return edhFormat.buildEDHFormat();
-    }
-
-    public List<Format> buildAllFormatList(){
-        formatList.add(buildStandardFormat());
-        formatList.add(buildModernFormat());
-        formatList.add(buildLegacyFormat());
-        formatList.add(buildVintageFormat());
-        formatList.add(buildEDHFormat());
-        return this.formatList;
     }
 
     public List<Card> filterByColor(EnumSet<CardColor> colors){
@@ -97,7 +92,7 @@ public class UIController {
     }
 
     public List<Card> search(String term){
-        filter.findTerm(filter.getCardFormatList(), term);
+        filter.findTerm(fullCardList, term);
         return filter.getCardsWithTerm();
     }
 
@@ -105,7 +100,11 @@ public class UIController {
         return fullCardList;
     }
 
-    public void retrieveLegalCardsForFormat(Format format) {
+    public ObservableList<Card> retrieveLegalCardsForFormat(Format format) {
+        ObservableList<Card> formatCardList = FXCollections.observableArrayList();
         filter.filterByFormat(fullCardList, format);
+        formatCardList.addAll(filter.getCardFormatList());
+        Collections.sort(formatCardList);
+        return formatCardList;
     }
 }

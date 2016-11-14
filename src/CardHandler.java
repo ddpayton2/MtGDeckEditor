@@ -47,7 +47,7 @@ public class CardHandler extends DefaultHandler{
             card.setCardType(temp);
         }
         else if(qName.equalsIgnoreCase("text")){
-            card.setCardText(temp.replaceAll("\n", "").replaceAll("&quot;", "'").replaceAll("&#39;", "'"));
+            card.setCardText(temp.replaceAll("\n", "").replaceAll("&quot;", "'").replaceAll("&#39;", "'").replaceAll("\\{", "").replaceAll("\\}", ""));
         }
         else if(qName.equalsIgnoreCase("pt")){
             card.setPT(temp);

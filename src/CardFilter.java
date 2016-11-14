@@ -1,21 +1,20 @@
 import com.google.common.collect.Lists;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@SuppressWarnings("WeakerAccess")
 public class CardFilter {
 
-    private List<Card> cardFormatList = Lists.newArrayList();
-    private List<Card> filteredCardList = Lists.newArrayList();
-    private List<Card> searchTermList = Lists.newArrayList();
+    private final List<Card> cardFormatList = Lists.newArrayList();
+    private final List<Card> filteredCardList = Lists.newArrayList();
+    private final List<Card> searchTermList = Lists.newArrayList();
 
     public void filterByCardColor(List<Card> cardList, EnumSet<CardColor> colors){
         filteredCardList.clear();
-        for(Card card : cardList){
-            if(card.containsAllColors(colors)){
-                filteredCardList.add(card);
-            }
-        }
+        filteredCardList.addAll(cardList.stream().filter(card -> card.containsAllColors(colors)).collect(Collectors.toList()));
     }
 
     public List<Card> getFilteredCardList(){
@@ -24,12 +23,9 @@ public class CardFilter {
 
     public void findTerm(List<Card> list, String term) {
         searchTermList.clear();
-        for(Card card : list){
-            if(card.getCardName().toUpperCase().contains(term.toUpperCase()) || card.getCardType().toUpperCase().contains(term.toUpperCase())
-                    || card.getCardText().toUpperCase().contains(term.toUpperCase())){
-                searchTermList.add(card);
-            }
-        }
+        searchTermList.addAll(list.stream().filter(card -> card.getCardName().toUpperCase().contains(term.toUpperCase()) || card.getCardType().toUpperCase().contains(term.toUpperCase())
+                || card.getCardText().toUpperCase().contains(term.toUpperCase()) || card.getCardCost().toUpperCase().equalsIgnoreCase(term.toUpperCase())).collect(Collectors.toList()));
+        Collections.sort(searchTermList);
     }
 
     public List<Card> getCardsWithTerm(){
@@ -37,8 +33,10 @@ public class CardFilter {
     }
 
     public void filterByFormat(List<Card> list, Format format) {
-        for(Card card : list){
-            if(format.getLegalMtgSetsNames().contains(card.getSetsPrintedIn()));
+        for(String mtgSetName : format.getLegalMtgSetsNames()){
+            for(Card card : list){
+                cardFormatList.addAll(card.getSetsPrintedIn().stream().filter(cardMtgSetName -> cardMtgSetName.equalsIgnoreCase(mtgSetName)).map(cardMtgSetName -> card).collect(Collectors.toList()));
+            }
         }
     }
 

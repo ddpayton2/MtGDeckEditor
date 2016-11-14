@@ -1,4 +1,4 @@
-
+@SuppressWarnings("WeakerAccess")
 public enum CardColor {
 
     COLORLESS("C"),
@@ -9,7 +9,7 @@ public enum CardColor {
     GREEN("G"),
     EMPTY("");
 
-    private String colorNickname;
+    private final String colorNickname;
 
     CardColor(String colorNickname){
         this.colorNickname = colorNickname;

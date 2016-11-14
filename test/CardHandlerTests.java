@@ -32,7 +32,6 @@ public class CardHandlerTests {
     public static Collection<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
         setUp();
         Card testCard = findTestCard("Emrakul, the Promised End");
-        Card testCard_2 = findTestCard("Vorel of the Hull Clade");
         assert testCard != null;
         return Arrays.asList(new Object[][]{
                 {"Emrakul, the Promised End", testCard.getCardName()},

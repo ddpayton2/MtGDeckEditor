@@ -20,7 +20,6 @@ public class ModernFormatTests {
     private static final ModernFormat modernFormat = new ModernFormat(builder);
     private static Format modern = new Format(builder);
     private static final SetSorter sorter = new SetSorter();
-    private static final List<MtgSet> MODERN_LEGAL_MTG_SETs = modern.getLegalSets();
 
     public static void setUp() throws IOException, SAXException, ParserConfigurationException {
         InputStream inputStream = CardSetHandlerTests.class.getResourceAsStream("cards.xml");
@@ -43,9 +42,11 @@ public class ModernFormatTests {
         });
     }
 
+    @SuppressWarnings({"CanBeFinal", "unused"})
     @Parameterized.Parameter
     private String expectedName;
 
+    @SuppressWarnings({"CanBeFinal", "unused"})
     @Parameterized.Parameter(value = 1)
     private String actualName;
 
