@@ -2,11 +2,11 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,12 +23,12 @@ public class UserInterface extends Application {
     private final Button searchButton = new Button("Search");
     private final TextArea cardInfo = new TextArea();
 
-    private final ToggleButton whiteButton = new ToggleButton("W");
-    private final ToggleButton blueButton = new ToggleButton("U");
-    private final ToggleButton blackButton = new ToggleButton("B");
-    private final ToggleButton redButton = new ToggleButton("R");
-    private final ToggleButton greenButton = new ToggleButton("G");
-    private final ToggleButton colorlessButton = new ToggleButton("C");
+    private final ToggleButton whiteButton = new ToggleButton();
+    private final ToggleButton blueButton = new ToggleButton();
+    private final ToggleButton blackButton = new ToggleButton();
+    private final ToggleButton redButton = new ToggleButton();
+    private final ToggleButton greenButton = new ToggleButton();
+    private final ToggleButton colorlessButton = new ToggleButton();
     private final Button resetButton = new Button("Reset");
     private final Button standardFormatButton = new Button("Standard");
     private final Button modernFormatButton = new Button("Modern");
@@ -88,6 +88,7 @@ public class UserInterface extends Application {
         redButton.setSelected(false);
         blackButton.setSelected(false);
         greenButton.setSelected(false);
+        colorlessButton.setSelected(false);
         cardListOutput.setItems(cardObservableList);
     }
 
@@ -153,7 +154,52 @@ public class UserInterface extends Application {
         legacyFormatButton.setOnAction(event -> chooseFormat(controller.buildLegacyFormat()));
         vintageFormatButton.setOnAction(event -> chooseFormat(controller.buildVintageFormat()));
         edhFormatButton.setOnAction(event -> chooseFormat(controller.buildEDHFormat()));
+        setColorButtonStyles();
         setActionOnPressed();
+    }
+
+    private void setColorButtonStyles() {
+        Image whiteButtonImage = new Image(getClass().getResourceAsStream("white mana symbol.png"));
+        ImageView whiteButtonImageView = new ImageView(whiteButtonImage);
+        whiteButtonImageView.setFitHeight(50);
+        whiteButtonImageView.setFitWidth(50);
+        whiteButtonImageView.setPreserveRatio(true);
+        whiteButton.setGraphic(whiteButtonImageView);
+
+        Image blueButtonImage = new Image(getClass().getResourceAsStream("blue mana symbol.png"));
+        ImageView blueButtonImageView = new ImageView(blueButtonImage);
+        blueButtonImageView.setFitWidth(50);
+        blueButtonImageView.setFitWidth(50);
+        blueButtonImageView.setPreserveRatio(true);
+        blueButton.setGraphic(blueButtonImageView);
+
+        Image blackButtonImage = new Image(getClass().getResourceAsStream("black mana symbol.png"));
+        ImageView blackButtonImageView = new ImageView(blackButtonImage);
+        blackButtonImageView.setFitWidth(50);
+        blackButtonImageView.setFitHeight(50);
+        blackButtonImageView.setPreserveRatio(true);
+        blackButton.setGraphic(blackButtonImageView);
+
+        Image redButtonImage = new Image(getClass().getResourceAsStream("red mana symbol.png"));
+        ImageView redButtonImageView = new ImageView(redButtonImage);
+        redButtonImageView.setFitWidth(50);
+        redButtonImageView.setFitHeight(50);
+        redButtonImageView.setPreserveRatio(true);
+        redButton.setGraphic(redButtonImageView);
+
+        Image greenButtonImage = new Image(getClass().getResourceAsStream("green mana symbol.png"));
+        ImageView greenButtonImageView = new ImageView(greenButtonImage);
+        greenButtonImageView.setFitWidth(50);
+        greenButtonImageView.setFitHeight(50);
+        greenButtonImageView.setPreserveRatio(true);
+        greenButton.setGraphic(greenButtonImageView);
+
+        Image colorlessButtonImage = new Image(getClass().getResourceAsStream("colorless mana symbol.png"));
+        ImageView colorlessButtonImageView = new ImageView(colorlessButtonImage);
+        colorlessButtonImageView.setFitWidth(50);
+        colorlessButtonImageView.setFitHeight(50);
+        colorlessButtonImageView.setPreserveRatio(true);
+        colorlessButton.setGraphic(colorlessButtonImageView);
     }
 
     private void setActionOnPressed(){

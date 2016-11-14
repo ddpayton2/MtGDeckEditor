@@ -24,7 +24,10 @@ public class CardFilter {
     public void findTerm(List<Card> list, String term) {
         searchTermList.clear();
         searchTermList.addAll(list.stream().filter(card -> card.getCardName().toUpperCase().contains(term.toUpperCase()) || card.getCardType().toUpperCase().contains(term.toUpperCase())
-                || card.getCardText().toUpperCase().contains(term.toUpperCase()) || card.getCardCost().toUpperCase().equalsIgnoreCase(term.toUpperCase())).collect(Collectors.toList()));
+                || card.getCardText().toUpperCase().contains(term.toUpperCase())
+                || card.getCardCost().toUpperCase().contains(term.toUpperCase())
+                || card.getPt().toUpperCase().contains(term.toUpperCase()))
+                .collect(Collectors.toList()));
         Collections.sort(searchTermList);
     }
 
