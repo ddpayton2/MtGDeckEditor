@@ -1,10 +1,12 @@
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -42,6 +44,7 @@ public class UserInterface extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         primaryStage.setTitle("Magic: the Gathering Deck Editor");
         primaryStage.setScene(createScene());
         primaryStage.show();
@@ -69,77 +72,15 @@ public class UserInterface extends Application {
     }
 
     private Scene createScene() {
+
         cardListOutput.setEditable(false);
         cardInfo.setEditable(false);
-        searchTermInputArea.setOnKeyPressed(event -> {
-            if(event.getCode() == KeyCode.ENTER){
-                useAllFilters(searchTermInputArea.getText());
-            }
-        });
-
-        searchButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        whiteButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        blueButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        blackButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        redButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        greenButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        colorlessButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
-        resetButton.setOnAction(event -> resetAllOutputFields());
-        standardFormatButton.setOnAction(event -> chooseFormat(controller.buildStandardFormat()));
-        modernFormatButton.setOnAction(event -> chooseFormat(controller.buildModernFormat()));
-        legacyFormatButton.setOnAction(event -> chooseFormat(controller.buildLegacyFormat()));
-        vintageFormatButton.setOnAction(event -> chooseFormat(controller.buildVintageFormat()));
-        edhFormatButton.setOnAction(event -> chooseFormat(controller.buildEDHFormat()));
-
-        cardListOutput.setOnMousePressed((event -> {
-            cardInfo.setWrapText(true);
-            if(event.isPrimaryButtonDown() && event.getClickCount() == 1){
-                cardInfo.clear();
-                cardInfo.setText(cardListOutput.getSelectionModel().getSelectedItem()
-                .getAllCardInfo());
-            }
-        }));
-
-        VBox searchBarAndCardListResults = new VBox(
-                        new Label("Enter Search Term"),
-                        searchTermInputArea,
-                        searchButton,
-                        resetButton,
-                        new HBox(whiteButton, blueButton, blackButton, redButton, greenButton, colorlessButton),
-                        new Label("Cards"),
-                        cardListOutput
-        );
-
-        cardInfo.setMaxSize(200,400);
-        cardInfo.setEditable(false);
-
-        VBox cardInfoDisplay = new VBox(
-                new Label("Card Information"),
-                cardInfo
-        );
-
-        cardInfoDisplay.setAlignment(Pos.TOP_CENTER);
-
-        VBox formatBox = new VBox(
-                new Label("Format"),
-                standardFormatButton,
-                modernFormatButton,
-                legacyFormatButton,
-                vintageFormatButton,
-                edhFormatButton
-        );
-
-        formatBox.setAlignment(Pos.TOP_RIGHT);
-
-        HBox base = new HBox(
-                searchBarAndCardListResults,
-                cardInfoDisplay,
-                formatBox
-        );
-        return new Scene(base);
+        setActionForButtons();
+        return designLayoutForBoxes();
     }
 
     private void resetAllOutputFields() {
+
         searchTermInputArea.clear();
         cardInfo.clear();
         whiteButton.setSelected(false);
@@ -151,19 +92,23 @@ public class UserInterface extends Application {
     }
 
     private void useAllFilters(String term) {
+
         searchForTerm(term);
         displayFilteredByColorList();
     }
 
     private void searchForTerm(String text) {
+
         cardListOutput.setItems(FXCollections.observableArrayList(controller.search(text)));
     }
 
     private void chooseFormat(Format format){
+
         cardListOutput.setItems(controller.retrieveLegalCardsForFormat(format));
     }
 
     private void displayFilteredByColorList(){
+
         selectedColors.clear();
         if (whiteButton.isSelected() || blueButton.isSelected() || blackButton.isSelected()
                 || redButton.isSelected() || greenButton.isSelected() || colorlessButton.isSelected()) {
@@ -191,6 +136,80 @@ public class UserInterface extends Application {
         }
         filteredList.setAll(controller.filterByColor(selectedColors));
         cardListOutput.setItems(filteredList);
+    }
+
+    private void setActionForButtons(){
+
+        searchButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        whiteButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        blueButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        blackButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        redButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        greenButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        colorlessButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
+        resetButton.setOnAction(event -> resetAllOutputFields());
+        standardFormatButton.setOnAction(event -> chooseFormat(controller.buildStandardFormat()));
+        modernFormatButton.setOnAction(event -> chooseFormat(controller.buildModernFormat()));
+        legacyFormatButton.setOnAction(event -> chooseFormat(controller.buildLegacyFormat()));
+        vintageFormatButton.setOnAction(event -> chooseFormat(controller.buildVintageFormat()));
+        edhFormatButton.setOnAction(event -> chooseFormat(controller.buildEDHFormat()));
+        setActionOnPressed();
+    }
+
+    private void setActionOnPressed(){
+
+        cardListOutput.setOnMousePressed((event -> {
+            cardInfo.setWrapText(true);
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 1){
+                cardInfo.clear();
+                cardInfo.setText(cardListOutput.getSelectionModel().getSelectedItem()
+                        .getAllCardInfo());
+            }
+        }));
+        searchTermInputArea.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                useAllFilters(searchTermInputArea.getText());
+            }
+        });
+    }
+
+    private Scene designLayoutForBoxes(){
+
+        HBox setSearchAndResearchBars = new HBox(resetButton,searchButton);
+        setSearchAndResearchBars.setSpacing(140);
+
+        VBox searchBarAndCardListResults = new VBox(new Label("Enter Search Term:"), searchTermInputArea,
+                setSearchAndResearchBars, new Label("Color:"),
+                new HBox(whiteButton, blueButton, blackButton, redButton, greenButton, colorlessButton),
+                new Label("Cards:"), cardListOutput);
+        searchBarAndCardListResults.setPadding(new Insets(10,10,10,10));
+        searchBarAndCardListResults.setSpacing(10);
+
+        VBox cardInfoDisplay = new VBox( new Label("Card Information:"), cardInfo);
+        cardInfoDisplay.setSpacing(10);
+
+        VBox formatBox = new VBox( new Label("Format:"), standardFormatButton, modernFormatButton, legacyFormatButton,
+                vintageFormatButton, edhFormatButton);
+        formatBox.setSpacing(10);
+
+        HBox base = new HBox( searchBarAndCardListResults, cardInfoDisplay, formatBox);
+        base.setPadding(new Insets(10,10,10,10));
+        base.setSpacing(5);
+
+        setStylesForButton();
+        cardInfo.setPrefSize(200,300);
+        cardInfo.setEditable(false);
+
+        return new Scene(base);
+    }
+
+    private void setStylesForButton(){
+
+        standardFormatButton.setPrefWidth(150);
+        modernFormatButton.setPrefWidth(150);
+        legacyFormatButton.setPrefWidth(150);
+        vintageFormatButton.setPrefWidth(150);
+        edhFormatButton.setPrefWidth(150);
     }
 }
 
