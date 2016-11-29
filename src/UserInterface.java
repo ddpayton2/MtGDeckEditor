@@ -38,11 +38,8 @@ public class UserInterface extends Application {
     private final ToggleButton greenButton = new ToggleButton();
     private final ToggleButton colorlessButton = new ToggleButton();
     private final Button resetButton = new Button("Reset");
-    private final Button standardFormatButton = new Button("Standard");
-    private final Button modernFormatButton = new Button("Modern");
-    private final Button legacyFormatButton = new Button("Legacy");
-    private final Button vintageFormatButton = new Button("Vintage");
-    private final Button edhFormatButton = new Button("Commander (EDH)");
+    private final Button formatButton = new Button("GO");
+    private final ChoiceBox<String> formatsOptions = new ChoiceBox<>(FXCollections.observableArrayList("Legacy", "Modern","Standard","Vintage","Commander (EDH)"));
 
     private final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
     private final UIController controller = new UIController();
@@ -160,11 +157,7 @@ public class UserInterface extends Application {
         greenButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         colorlessButton.setOnAction(event -> useAllFilters(searchTermInputArea.getText()));
         resetButton.setOnAction(event -> resetAllOutputFields());
-        standardFormatButton.setOnAction(event -> chooseFormat(controller.buildStandardFormat()));
-        modernFormatButton.setOnAction(event -> chooseFormat(controller.buildModernFormat()));
-        legacyFormatButton.setOnAction(event -> chooseFormat(controller.buildLegacyFormat()));
-        vintageFormatButton.setOnAction(event -> chooseFormat(controller.buildVintageFormat()));
-        edhFormatButton.setOnAction(event -> chooseFormat(controller.buildEDHFormat()));
+        formatButton.setOnAction(event -> getChoice(formatsOptions));
         addCardToMainDeck.setOnAction(event -> addCardToMain());
         removeCardFromMainDeck.setOnAction(event -> removeFromMain());
         setColorButtonStyles();
@@ -194,47 +187,68 @@ public class UserInterface extends Application {
 
     private void setColorButtonStyles() {
 
-        Image whiteButtonImage = new Image(getClass().getResourceAsStream("white mana symbol.png"));
+        Image whiteButtonImage = new Image(getClass().getResourceAsStream("whitePicture.jpg"));
         ImageView whiteButtonImageView = new ImageView(whiteButtonImage);
         whiteButtonImageView.setFitHeight(50);
         whiteButtonImageView.setFitWidth(50);
         whiteButtonImageView.setPreserveRatio(true);
         whiteButton.setGraphic(whiteButtonImageView);
 
-        Image blueButtonImage = new Image(getClass().getResourceAsStream("blue mana symbol.png"));
+        Image blueButtonImage = new Image(getClass().getResourceAsStream("bluePicture.jpg"));
         ImageView blueButtonImageView = new ImageView(blueButtonImage);
         blueButtonImageView.setFitWidth(50);
         blueButtonImageView.setFitWidth(50);
         blueButtonImageView.setPreserveRatio(true);
         blueButton.setGraphic(blueButtonImageView);
 
-        Image blackButtonImage = new Image(getClass().getResourceAsStream("black mana symbol.png"));
+        Image blackButtonImage = new Image(getClass().getResourceAsStream("blackPicture.jpg"));
         ImageView blackButtonImageView = new ImageView(blackButtonImage);
         blackButtonImageView.setFitWidth(50);
         blackButtonImageView.setFitHeight(50);
         blackButtonImageView.setPreserveRatio(true);
         blackButton.setGraphic(blackButtonImageView);
 
-        Image redButtonImage = new Image(getClass().getResourceAsStream("red mana symbol.png"));
+        Image redButtonImage = new Image(getClass().getResourceAsStream("redPicture.jpg"));
         ImageView redButtonImageView = new ImageView(redButtonImage);
         redButtonImageView.setFitWidth(50);
         redButtonImageView.setFitHeight(50);
         redButtonImageView.setPreserveRatio(true);
         redButton.setGraphic(redButtonImageView);
 
-        Image greenButtonImage = new Image(getClass().getResourceAsStream("green mana symbol.png"));
+        Image greenButtonImage = new Image(getClass().getResourceAsStream("greenPicture.jpg"));
         ImageView greenButtonImageView = new ImageView(greenButtonImage);
         greenButtonImageView.setFitWidth(50);
         greenButtonImageView.setFitHeight(50);
         greenButtonImageView.setPreserveRatio(true);
         greenButton.setGraphic(greenButtonImageView);
 
-        Image colorlessButtonImage = new Image(getClass().getResourceAsStream("colorless mana symbol.png"));
+        Image colorlessButtonImage = new Image(getClass().getResourceAsStream("colorlessPicture.jpg"));
         ImageView colorlessButtonImageView = new ImageView(colorlessButtonImage);
         colorlessButtonImageView.setFitWidth(50);
         colorlessButtonImageView.setFitHeight(50);
         colorlessButtonImageView.setPreserveRatio(true);
         colorlessButton.setGraphic(colorlessButtonImageView);
+    }
+
+    private void getChoice(ChoiceBox<String> formatsOptions){
+
+        String formats = formatsOptions.getValue();
+        if(formats.equals("Legacy")){
+            chooseFormat(controller.buildLegacyFormat());
+        }
+        else if(formats.equals("Modern")){
+            chooseFormat(controller.buildModernFormat());
+        }
+        else if(formats.equals("Standard")){
+            chooseFormat(controller.buildStandardFormat());
+        }
+        else if(formats.equals("Vintage")){
+            chooseFormat(controller.buildVintageFormat());
+        }
+        else if(formats.equals("Commander (EDH)")){
+            chooseFormat(controller.buildEDHFormat());
+        }
+
     }
 
     private void setActionOnPressed(){
@@ -265,7 +279,7 @@ public class UserInterface extends Application {
     private Scene designLayoutForBoxes(){
 
         HBox setSearchAndResearchBars = new HBox(resetButton,searchButton);
-        setSearchAndResearchBars.setSpacing(140);
+        setSearchAndResearchBars.setSpacing(300);
 
         VBox searchBarAndCardListResults = new VBox(new Label("Enter Search Term:"), searchTermInputArea,
                 setSearchAndResearchBars, new Label("Color:"),
@@ -274,26 +288,23 @@ public class UserInterface extends Application {
         searchBarAndCardListResults.setPadding(new Insets(10,10,10,10));
         searchBarAndCardListResults.setSpacing(10);
 
-        VBox cardInfoDisplay = new VBox( new Label("Card Information:"), cardInfo);
-        cardInfoDisplay.setSpacing(10);
-
         VBox deckEditButtonsArea = new VBox(addCardToMainDeck, removeCardFromMainDeck, addCardToSideboard, removeCardFromSideboard);
+        VBox cardInfoDisplay = new VBox( new Label("Card Information:"), cardInfo, new Label("DeckEdit:"), deckEditButtonsArea);
+        cardInfoDisplay.setSpacing(10);
+        deckEditButtonsArea.setSpacing(10);
 
         VBox deckListArea = new VBox( new Label("Deck List:"), deckListOutput);
-        deckListArea.setPrefSize(400,600);
 
-        VBox formatBox = new VBox( new Label("Format:"), standardFormatButton, modernFormatButton, legacyFormatButton,
-                vintageFormatButton, edhFormatButton, deckListArea);
+        HBox formatsArea = new HBox(formatsOptions, formatButton);
+        VBox formatBox = new VBox( new Label("Format:"), formatsArea, deckListArea);
         formatBox.setSpacing(10);
+        formatsArea.setSpacing(10);
 
-
-
-        HBox base = new HBox( searchBarAndCardListResults, cardInfoDisplay, deckEditButtonsArea, formatBox);
+        HBox base = new HBox( searchBarAndCardListResults, cardInfoDisplay, formatBox);
         base.setPadding(new Insets(10,10,10,10));
         base.setSpacing(5);
 
         setStylesForButton();
-        cardInfo.setPrefSize(200,300);
         cardInfo.setEditable(false);
 
         return new Scene(base);
@@ -301,16 +312,13 @@ public class UserInterface extends Application {
 
     private void setStylesForButton(){
 
-        standardFormatButton.setPrefWidth(150);
-        modernFormatButton.setPrefWidth(150);
-        legacyFormatButton.setPrefWidth(150);
-        vintageFormatButton.setPrefWidth(150);
-        edhFormatButton.setPrefWidth(150);
-
         addCardToMainDeck.setPrefWidth(200);
         removeCardFromMainDeck.setPrefWidth(200);
         addCardToSideboard.setPrefWidth(200);
         removeCardFromSideboard.setPrefWidth(200);
+        cardInfo.setMinHeight(410);
+        cardInfo.setMaxWidth(200);
+        deckListOutput.setMinHeight(530);
     }
 }
 
