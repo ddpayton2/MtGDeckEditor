@@ -186,42 +186,42 @@ public class UserInterface extends Application {
 
     private void setColorButtonStyles() {
 
-        Image whiteButtonImage = new Image(getClass().getResourceAsStream("white mana symbol.png"));
+        Image whiteButtonImage = new Image(getClass().getResourceAsStream("whitePicture.jpg"));
         ImageView whiteButtonImageView = new ImageView(whiteButtonImage);
         whiteButtonImageView.setFitHeight(50);
         whiteButtonImageView.setFitWidth(50);
         whiteButtonImageView.setPreserveRatio(true);
         whiteButton.setGraphic(whiteButtonImageView);
 
-        Image blueButtonImage = new Image(getClass().getResourceAsStream("blue mana symbol.png"));
+        Image blueButtonImage = new Image(getClass().getResourceAsStream("bluePicture.jpg"));
         ImageView blueButtonImageView = new ImageView(blueButtonImage);
         blueButtonImageView.setFitWidth(50);
         blueButtonImageView.setFitWidth(50);
         blueButtonImageView.setPreserveRatio(true);
         blueButton.setGraphic(blueButtonImageView);
 
-        Image blackButtonImage = new Image(getClass().getResourceAsStream("black mana symbol.png"));
+        Image blackButtonImage = new Image(getClass().getResourceAsStream("blackPicture.jpg"));
         ImageView blackButtonImageView = new ImageView(blackButtonImage);
         blackButtonImageView.setFitWidth(50);
         blackButtonImageView.setFitHeight(50);
         blackButtonImageView.setPreserveRatio(true);
         blackButton.setGraphic(blackButtonImageView);
 
-        Image redButtonImage = new Image(getClass().getResourceAsStream("red mana symbol.png"));
+        Image redButtonImage = new Image(getClass().getResourceAsStream("redPicture.jpg"));
         ImageView redButtonImageView = new ImageView(redButtonImage);
         redButtonImageView.setFitWidth(50);
         redButtonImageView.setFitHeight(50);
         redButtonImageView.setPreserveRatio(true);
         redButton.setGraphic(redButtonImageView);
 
-        Image greenButtonImage = new Image(getClass().getResourceAsStream("green mana symbol.png"));
+        Image greenButtonImage = new Image(getClass().getResourceAsStream("greenPicture.jpg"));
         ImageView greenButtonImageView = new ImageView(greenButtonImage);
         greenButtonImageView.setFitWidth(50);
         greenButtonImageView.setFitHeight(50);
         greenButtonImageView.setPreserveRatio(true);
         greenButton.setGraphic(greenButtonImageView);
 
-        Image colorlessButtonImage = new Image(getClass().getResourceAsStream("colorless mana symbol.png"));
+        Image colorlessButtonImage = new Image(getClass().getResourceAsStream("colorlessPicture.jpg"));
         ImageView colorlessButtonImageView = new ImageView(colorlessButtonImage);
         colorlessButtonImageView.setFitWidth(50);
         colorlessButtonImageView.setFitHeight(50);
