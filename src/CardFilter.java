@@ -26,7 +26,7 @@ public class CardFilter {
         searchTermList.addAll(list.stream().filter(card -> card.getCardName().toUpperCase().contains(term.toUpperCase()) || card.getCardType().toUpperCase().contains(term.toUpperCase())
                 || card.getCardText().toUpperCase().contains(term.toUpperCase())
                 || card.getCardCost().toUpperCase().contains(term.toUpperCase())
-                || card.getPt().toUpperCase().contains(term.toUpperCase()))
+                || card.getPowerAndToughness().toUpperCase().contains(term.toUpperCase()))
                 .collect(Collectors.toList()));
         Collections.sort(searchTermList);
     }

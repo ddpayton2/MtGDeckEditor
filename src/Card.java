@@ -12,7 +12,7 @@ public class Card implements Comparable<Card>{
     private String cardCost;
     private String cardType;
     private String cardText;
-    private String pt;
+    private String powerAndToughness;
     private final List<String> setsPrintedIn = Lists.newArrayList();
     private final EnumSet<CardColor> cardColors = EnumSet.of(CardColor.COLORLESS);
 
@@ -62,12 +62,12 @@ public class Card implements Comparable<Card>{
     }
 
     public void setPT(String pt){
-        this.pt = pt;
+        this.powerAndToughness = pt;
     }
 
-    public String getPt(){
-        if(this.pt != null){
-            return this.pt;
+    public String getPowerAndToughness(){
+        if(this.powerAndToughness != null){
+            return this.powerAndToughness;
         }
         return "";
     }
@@ -82,7 +82,7 @@ public class Card implements Comparable<Card>{
 
     public String getAllCardInfo(){
         return this.cardName + "\t" + this.getCardCost() + "\n" + "\n"
-                + this.getCardType() + "\n" + this.getCardText() + "\n" + this.getPt()
+                + this.getCardType() + "\n" + this.getCardText() + "\n" + this.getPowerAndToughness()
                 +"\n" + this.setsPrintedIn;
     }
 

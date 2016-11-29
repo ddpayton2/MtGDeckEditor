@@ -20,6 +20,13 @@ public class UserInterface extends Application {
 
     private final TextField searchTermInputArea = new TextField();
     private final ListView<Card> cardListOutput = new ListView<>();
+
+    private final ListView<Card> deckListOutput = new ListView<>();
+    private final Button addCardToMainDeck = new Button("Add to Mainboard");
+    private final Button removeCardFromMainDeck = new Button ("Remove from Mainboard");
+    private final Button addCardToSideboard = new Button("Add to Sideboard");
+    private final Button removeCardFromSideboard = new Button("Remove from Sideboard");
+
     private final Button searchButton = new Button("Search");
     private final TextArea cardInfo = new TextArea();
 
@@ -41,6 +48,8 @@ public class UserInterface extends Application {
 
     private final ObservableList<Card> cardObservableList = FXCollections.observableArrayList();
     private final ObservableList<Card> filteredList = FXCollections.observableArrayList();
+
+    private ObservableList<Card> observableDeckList = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage primaryStage) {
@@ -75,6 +84,7 @@ public class UserInterface extends Application {
 
         cardListOutput.setEditable(false);
         cardInfo.setEditable(false);
+        deckListOutput.setEditable(false);
         setActionForButtons();
         return designLayoutForBoxes();
     }
@@ -154,11 +164,35 @@ public class UserInterface extends Application {
         legacyFormatButton.setOnAction(event -> chooseFormat(controller.buildLegacyFormat()));
         vintageFormatButton.setOnAction(event -> chooseFormat(controller.buildVintageFormat()));
         edhFormatButton.setOnAction(event -> chooseFormat(controller.buildEDHFormat()));
+        addCardToMainDeck.setOnAction(event -> addCardToMain());
+        removeCardFromMainDeck.setOnAction(event -> removeFromMain());
         setColorButtonStyles();
         setActionOnPressed();
     }
 
+    private void removeFromMain() {
+        observableDeckList.remove(deckListOutput.getSelectionModel().getSelectedItem());
+    }
+
+    private void addCardToMain() {
+        observableDeckList.add(cardListOutput.getSelectionModel().getSelectedItem());
+        deckListOutput.setItems(observableDeckList);
+        deckListOutput.setCellFactory(lv -> new ListCell<Card>(){
+            @Override
+            public void updateItem(Card card, boolean empty){
+                super.updateItem(card, empty);
+                if(empty){
+                    setText(null);
+                }
+                else{
+                    setText(card.getCardName());
+                }
+            }
+        });
+    }
+
     private void setColorButtonStyles() {
+
         Image whiteButtonImage = new Image(getClass().getResourceAsStream("white mana symbol.png"));
         ImageView whiteButtonImageView = new ImageView(whiteButtonImage);
         whiteButtonImageView.setFitHeight(50);
@@ -212,6 +246,14 @@ public class UserInterface extends Application {
                         .getAllCardInfo());
             }
         }));
+        deckListOutput.setOnMousePressed((event -> {
+            cardInfo.setWrapText(true);
+            if(event.isPrimaryButtonDown() && event.getClickCount() == 1){
+                cardInfo.clear();
+                cardInfo.setText(deckListOutput.getSelectionModel().getSelectedItem()
+                        .getAllCardInfo());
+            }
+        }));
         searchTermInputArea.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER){
                 useAllFilters(searchTermInputArea.getText());
@@ -234,11 +276,18 @@ public class UserInterface extends Application {
         VBox cardInfoDisplay = new VBox( new Label("Card Information:"), cardInfo);
         cardInfoDisplay.setSpacing(10);
 
+        VBox deckEditButtonsArea = new VBox(addCardToMainDeck, removeCardFromMainDeck, addCardToSideboard, removeCardFromSideboard);
+
+        VBox deckListArea = new VBox( new Label("Deck List:"), deckListOutput);
+        deckListArea.setPrefSize(400,600);
+
         VBox formatBox = new VBox( new Label("Format:"), standardFormatButton, modernFormatButton, legacyFormatButton,
-                vintageFormatButton, edhFormatButton);
+                vintageFormatButton, edhFormatButton, deckListArea);
         formatBox.setSpacing(10);
 
-        HBox base = new HBox( searchBarAndCardListResults, cardInfoDisplay, formatBox);
+
+
+        HBox base = new HBox( searchBarAndCardListResults, cardInfoDisplay, deckEditButtonsArea, formatBox);
         base.setPadding(new Insets(10,10,10,10));
         base.setSpacing(5);
 
@@ -256,6 +305,11 @@ public class UserInterface extends Application {
         legacyFormatButton.setPrefWidth(150);
         vintageFormatButton.setPrefWidth(150);
         edhFormatButton.setPrefWidth(150);
+
+        addCardToMainDeck.setPrefWidth(200);
+        removeCardFromMainDeck.setPrefWidth(200);
+        addCardToSideboard.setPrefWidth(200);
+        removeCardFromSideboard.setPrefWidth(200);
     }
 }
 
