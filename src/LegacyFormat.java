@@ -24,6 +24,12 @@ public class LegacyFormat extends Format {
             if(card.getCardType().equalsIgnoreCase("Conspiracy")){
                 legacyBannedList.add(card);
             }
+            else if(card.getSetsPrintedIn().contains("pCEL")
+                    || card.getSetsPrintedIn().contains("ARC")
+                    || card.getSetsPrintedIn().contains("UNH")
+                    || card.getSetsPrintedIn().contains("UGL")){
+                legacyBannedList.add(card);
+            }
             else if(card.getCardText().contains("playing for ante")){
                 legacyBannedList.add(card);
             }

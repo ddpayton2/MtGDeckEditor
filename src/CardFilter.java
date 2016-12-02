@@ -36,10 +36,12 @@ public class CardFilter {
     }
 
     public void filterByFormat(List<Card> list, Format format) {
+
+        Collections.sort(list);
         cardFormatList.clear();
-        for(String mtgSetName : format.getLegalMtgSetsNames()){
-            for(Card card : list){
-                cardFormatList.addAll(card.getSetsPrintedIn().stream().filter(cardMtgSetName -> cardMtgSetName.equalsIgnoreCase(mtgSetName)).map(cardMtgSetName -> card).collect(Collectors.toList()));
+        for(Card card : list){
+            if(format.getLegalMtgSetsNames().containsAll(card.getSetsPrintedIn()) && !format.getBannedList().contains(card)){
+                cardFormatList.add(card);
             }
         }
     }

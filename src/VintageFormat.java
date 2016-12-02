@@ -24,6 +24,12 @@ public class VintageFormat extends Format{
             if(card.getCardType().equalsIgnoreCase("Conspiracy")){
                 vintageBannedList.add(card);
             }
+            else if(card.getSetsPrintedIn().contains("pCEL")
+                    || card.getSetsPrintedIn().contains("ARC")
+                    || card.getSetsPrintedIn().contains("UNH")
+                    || card.getSetsPrintedIn().contains("UGL")){
+                vintageBannedList.add(card);
+            }
             else if (card.getCardText().contains("playing for ante")){
                 vintageBannedList.add(card);
             }

@@ -1,3 +1,4 @@
+import com.google.common.collect.Lists;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.xml.sax.SAXException;
@@ -15,9 +16,19 @@ public class UIController {
 
     private List<Card> fullCardList;
     private List<MtgSet> fullMtgSetList;
-    private final Format.Builder formatBuilder = new Format.Builder();
+    private final Format.Builder standardFormatBuilder = new Format.Builder();
+    private final Format.Builder modernFormatBuilder = new Format.Builder();
+    private final Format.Builder legacyFormatBuilder = new Format.Builder();
+    private final Format.Builder vintageFormatBuilder = new Format.Builder();
+    private final Format.Builder edhFormatBuilder = new Format.Builder();
+    private Format standard;
+    private Format modern;
+    private Format legacy;
+    private Format vintage;
+    private Format edh;
     private final CardFilter filter = new CardFilter();
     private final ObservableList<Card> formatCardList = FXCollections.observableArrayList();
+
     public void setUpListOfAllCards() throws IOException, SAXException {
         SAXParserFactory spfac = SAXParserFactory.newInstance();
         SAXParser sp = null;
@@ -48,41 +59,47 @@ public class UIController {
         catch (CardMtgSetHandler.DoneParsingException ignored){
         }
         fullMtgSetList = mtgSetHandler.returnAllSetsList();
+        Collections.sort(fullMtgSetList);
     }
 
     public Format buildStandardFormat(){
-        StandardFormat standardFormat = new StandardFormat(formatBuilder);
+        StandardFormat standardFormat = new StandardFormat(standardFormatBuilder);
         standardFormat.buildStandardLegalSetsList(fullMtgSetList);
-        return standardFormat.buildStandardFormat();
+        standard = standardFormat.buildStandardFormat();
+        return standard;
     }
 
     public Format buildModernFormat(){
-        ModernFormat modernFormat = new ModernFormat(formatBuilder);
+        ModernFormat modernFormat = new ModernFormat(modernFormatBuilder);
         modernFormat.buildModernLegalSetsList(fullMtgSetList);
         modernFormat.buildModernBannedList(fullCardList);
-        return modernFormat.buildModernFormat();
+        modern = modernFormat.buildModernFormat();
+        return modern;
     }
 
     public Format buildLegacyFormat(){
-        LegacyFormat legacyFormat = new LegacyFormat(formatBuilder);
+        LegacyFormat legacyFormat = new LegacyFormat(legacyFormatBuilder);
         legacyFormat.buildLegacyLegalSetsList(fullMtgSetList);
         legacyFormat.buildLegacyBannedList(fullCardList);
-        return legacyFormat.buildLegacyFormat();
+        legacy = legacyFormat.buildLegacyFormat();
+        return legacy;
     }
 
     public Format buildVintageFormat() {
-        VintageFormat vintageFormat = new VintageFormat(formatBuilder);
+        VintageFormat vintageFormat = new VintageFormat(vintageFormatBuilder);
         vintageFormat.buildVintageLegalSetsList(fullMtgSetList);
         vintageFormat.buildVintageBannedList(fullCardList);
         vintageFormat.buildVintageRestrictedList(fullCardList);
-        return vintageFormat.buildVintageFormat();
+        vintage = vintageFormat.buildVintageFormat();
+        return vintage;
     }
 
     public Format buildEDHFormat(){
-        EDHFormat edhFormat = new EDHFormat(formatBuilder);
+        EDHFormat edhFormat = new EDHFormat(edhFormatBuilder);
         edhFormat.buildEDHLegalSetList(fullMtgSetList);
         edhFormat.buildEDHBannedList(fullCardList);
-        return edhFormat.buildEDHFormat();
+        edh = edhFormat.buildEDHFormat();
+        return edh;
     }
 
     public List<Card> filterByColor(EnumSet<CardColor> colors){
@@ -105,5 +122,16 @@ public class UIController {
         formatCardList.addAll(filter.getCardFormatList());
         Collections.sort(formatCardList);
         return formatCardList;
+    }
+
+    public List<Card> searchForTermInFormat(String formatName, String term) {
+
+        List<Format> allFormats = Lists.newArrayList(standard, modern, legacy, vintage, edh);
+        for(Format format : allFormats){
+            if(format.getFormatName().equalsIgnoreCase(formatName)){
+                filter.findTerm(retrieveLegalCardsForFormat(format), term);
+            }
+        }
+        return filter.getCardsWithTerm();
     }
 }

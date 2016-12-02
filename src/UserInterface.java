@@ -42,7 +42,8 @@ public class UserInterface extends Application {
     private final ToggleButton colorlessButton = new ToggleButton();
     private final Button resetButton = new Button("Reset");
     private final Button formatButton = new Button("GO");
-    private final ChoiceBox<String> formatsOptions = new ChoiceBox<>(FXCollections.observableArrayList("Standard","Modern","Legacy","Vintage","Commander (EDH)"));
+    private final ChoiceBox<String> formatsOptions = new ChoiceBox<>(
+            FXCollections.observableArrayList("Standard","Modern","Legacy","Vintage","Commander (EDH)"));
 
     private final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
     private final UIController controller = new UIController();
@@ -51,8 +52,6 @@ public class UserInterface extends Application {
     private final ObservableList<Card> filteredList = FXCollections.observableArrayList();
 
     private ObservableList<Card> observableDeckList = FXCollections.observableArrayList();
-
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -108,7 +107,12 @@ public class UserInterface extends Application {
 
     private void useAllFilters(String term) {
 
-        searchForTerm(term);
+        if(!formatsOptions.getValue().equals(null)){
+            controller.searchForTermInFormat(formatsOptions.getValue(), term);
+        }
+        else{
+            searchForTerm(term);
+        }
         displayFilteredByColorList();
     }
 
@@ -246,7 +250,6 @@ public class UserInterface extends Application {
         else if(formats.equals("Commander (EDH)")){
             chooseFormat(controller.buildEDHFormat());
         }
-
     }
 
     private void setActionOnPressed(){
