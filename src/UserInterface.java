@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,7 +23,9 @@ public class UserInterface extends Application {
     private final TextField searchTermInputArea = new TextField();
     private final ListView<Card> cardListOutput = new ListView<>();
 
-    private final ListView<Card> deckListOutput = new ListView<>();
+    private final TableView<Card> deckListOutput = new TableView<>();
+    private final TableColumn frequencyOfCard = new TableColumn("Number");
+    private final TableColumn cardNames = new TableColumn("Cards");
     private final Button addCardToMainDeck = new Button("Add to Mainboard");
     private final Button removeCardFromMainDeck = new Button ("Remove from Mainboard");
     private final Button addCardToSideboard = new Button("Add to Sideboard");
@@ -39,7 +42,7 @@ public class UserInterface extends Application {
     private final ToggleButton colorlessButton = new ToggleButton();
     private final Button resetButton = new Button("Reset");
     private final Button formatButton = new Button("GO");
-    private final ChoiceBox<String> formatsOptions = new ChoiceBox<>(FXCollections.observableArrayList("Legacy", "Modern","Standard","Vintage","Commander (EDH)"));
+    private final ChoiceBox<String> formatsOptions = new ChoiceBox<>(FXCollections.observableArrayList("Standard","Modern","Legacy","Vintage","Commander (EDH)"));
 
     private final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
     private final UIController controller = new UIController();
@@ -48,6 +51,8 @@ public class UserInterface extends Application {
     private final ObservableList<Card> filteredList = FXCollections.observableArrayList();
 
     private ObservableList<Card> observableDeckList = FXCollections.observableArrayList();
+
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -80,6 +85,7 @@ public class UserInterface extends Application {
 
     private Scene createScene() {
 
+        setUpDeckListOutputTable();
         cardListOutput.setEditable(false);
         cardInfo.setEditable(false);
         deckListOutput.setEditable(false);
@@ -169,20 +175,12 @@ public class UserInterface extends Application {
     }
 
     private void addCardToMain() {
-        observableDeckList.add(cardListOutput.getSelectionModel().getSelectedItem());
-        deckListOutput.setItems(observableDeckList);
-        deckListOutput.setCellFactory(lv -> new ListCell<Card>(){
-            @Override
-            public void updateItem(Card card, boolean empty){
-                super.updateItem(card, empty);
-                if(empty){
-                    setText(null);
-                }
-                else{
-                    setText(card.getCardName());
-                }
-            }
-        });
+
+            observableDeckList.add(cardListOutput.getSelectionModel().getSelectedItem());
+            deckListOutput.setItems(observableDeckList);
+            cardNames.setCellValueFactory(
+                    new PropertyValueFactory("cardName")
+            );
     }
 
     private void setColorButtonStyles() {
@@ -278,6 +276,27 @@ public class UserInterface extends Application {
 
     private Scene designLayoutForBoxes(){
 
+        BorderPane root = new BorderPane();
+        VBox container = new VBox();
+        MenuBar mainMenu = new MenuBar();
+
+        ToolBar toolBar = new ToolBar();
+
+        container.getChildren().add(mainMenu);
+        container.getChildren().add(toolBar);
+        root.setTop(container);
+
+        Menu file = new Menu("File");
+        Menu help = new Menu("Help");
+        mainMenu.getMenus().addAll(file, help);
+
+        MenuItem openFile = new MenuItem("Open File");
+        MenuItem saveFile = new MenuItem("Save File");
+        MenuItem quit = new MenuItem("Quit");
+        file.getItems().addAll(openFile, saveFile, quit);
+
+        VBox optionBox = new VBox(container);
+
         HBox setSearchAndResearchBars = new HBox(resetButton,searchButton);
         setSearchAndResearchBars.setSpacing(300);
 
@@ -300,7 +319,7 @@ public class UserInterface extends Application {
         formatBox.setSpacing(10);
         formatsArea.setSpacing(10);
 
-        HBox base = new HBox( searchBarAndCardListResults, cardInfoDisplay, formatBox);
+        HBox base = new HBox(optionBox,searchBarAndCardListResults, cardInfoDisplay, formatBox);
         base.setPadding(new Insets(10,10,10,10));
         base.setSpacing(5);
 
@@ -319,6 +338,16 @@ public class UserInterface extends Application {
         cardInfo.setMinHeight(410);
         cardInfo.setMaxWidth(200);
         deckListOutput.setMinHeight(530);
+    }
+
+    private void setUpDeckListOutputTable(){
+
+        deckListOutput.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        deckListOutput.getColumns().addAll(frequencyOfCard,cardNames);
+        frequencyOfCard.prefWidthProperty().bind(deckListOutput.widthProperty().multiply(0.3));
+        cardNames.prefWidthProperty().bind(deckListOutput.widthProperty().multiply(0.7));
+        frequencyOfCard.setResizable(false);
+        cardNames.setResizable(false);
     }
 }
 
