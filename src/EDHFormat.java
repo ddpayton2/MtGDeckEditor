@@ -20,6 +20,48 @@ public class EDHFormat extends Format{
     }
 
     public void buildEDHBannedList(List<Card> allCardsList){
+        List<String> bannedList = Lists.newArrayList(
+                "Ancestral Recall",
+                "Balance",
+                "Biorhythm",
+                "Black Lotus",
+                "Braids, Cabal Minion",
+                "Chaos Orb",
+                "Coalition Victory",
+                "Channel",
+                "Emrakul, the Aeons Torn",
+                "Erayo, Soratami Ascendant",
+                "Falling Star",
+                "Fastbond",
+                "Gifts Ungiven",
+                "Griselbrand",
+                "Karakas",
+                "Library of Alexandria",
+                "Limited Resources",
+                "Mox Emerald",
+                "Mox Jet",
+                "Mox Ruby",
+                "Mox Pearl",
+                "Mox Sapphire",
+                "Painter's Servant",
+                "Panoptic Mirror",
+                "Primeval Titan",
+                "Prophet of Kruphix",
+                "Protean Hulk",
+                "Recurring Nightmare",
+                "Rofellos, Llanowar Emissary",
+                "Shahrazad",
+                "Sundering Titan",
+                "Sway of the Stars",
+                "Sylvan Primordial",
+                "Time Vault",
+                "Time Walk",
+                "Tinker",
+                "Tolarian Academy",
+                "Trade Secrets",
+                "Upheaval",
+                "Worldfire",
+                "Yawgmoth's Bargain");
         for(Card card : allCardsList){
             if(card.getCardType().equalsIgnoreCase("Conspiracy")){
                 EDHBannedList.add(card);
@@ -33,47 +75,7 @@ public class EDHFormat extends Format{
             else if (card.getCardText().contains("playing for ante")){
                 EDHBannedList.add(card);
             }
-            if(card.getCardName().equalsIgnoreCase("Ancestral Recall")
-                    || card.getCardName().equalsIgnoreCase("Balance")
-                    || card.getCardName().equalsIgnoreCase("Biorhythm")
-                    || card.getCardName().equalsIgnoreCase("Black Lotus")
-                    || card.getCardName().equalsIgnoreCase("Braids, Cabal Minion")
-                    || card.getCardName().equalsIgnoreCase("Chaos Orb")
-                    || card.getCardName().equalsIgnoreCase("Coalition Victory")
-                    || card.getCardName().equalsIgnoreCase("Channel")
-                    || card.getCardName().equalsIgnoreCase("Emrakul, the Aeons Torn")
-                    || card.getCardName().equalsIgnoreCase("Erayo, Soratami Ascendant")
-                    || card.getCardName().equalsIgnoreCase("Falling Star")
-                    || card.getCardName().equalsIgnoreCase("Fastbond")
-                    || card.getCardName().equalsIgnoreCase("Gifts Ungiven")
-                    || card.getCardName().equalsIgnoreCase("Griselbrand")
-                    || card.getCardName().equalsIgnoreCase("Karakas")
-                    || card.getCardName().equalsIgnoreCase("Library of Alexandria")
-                    || card.getCardName().equalsIgnoreCase("Limited Resources")
-                    || card.getCardName().equalsIgnoreCase("Mox Emerald")
-                    || card.getCardName().equalsIgnoreCase("Mox Jet")
-                    || card.getCardName().equalsIgnoreCase("Mox Ruby")
-                    || card.getCardName().equalsIgnoreCase("Mox Pearl")
-                    || card.getCardName().equalsIgnoreCase("Mox Sapphire")
-                    || card.getCardName().equalsIgnoreCase("Painter's Servant")
-                    || card.getCardName().equalsIgnoreCase("Panoptic Mirror")
-                    || card.getCardName().equalsIgnoreCase("Primeval Titan")
-                    || card.getCardName().equalsIgnoreCase("Prophet of Kruphix")
-                    || card.getCardName().equalsIgnoreCase("Protean Hulk")
-                    || card.getCardName().equalsIgnoreCase("Recurring Nightmare")
-                    || card.getCardName().equalsIgnoreCase("Rofellos, Llanowar Emissary")
-                    || card.getCardName().equalsIgnoreCase("Shahrazad")
-                    || card.getCardName().equalsIgnoreCase("Sundering Titan")
-                    || card.getCardName().equalsIgnoreCase("Sway of the Stars")
-                    || card.getCardName().equalsIgnoreCase("Sylvan Primordial")
-                    || card.getCardName().equalsIgnoreCase("Time Vault")
-                    || card.getCardName().equalsIgnoreCase("Time Walk")
-                    || card.getCardName().equalsIgnoreCase("Tinker")
-                    || card.getCardName().equalsIgnoreCase("Tolarian Academy")
-                    || card.getCardName().equalsIgnoreCase("Trade Secrets")
-                    || card.getCardName().equalsIgnoreCase("Upheaval")
-                    || card.getCardName().equalsIgnoreCase("Worldfire")
-                    || card.getCardName().equalsIgnoreCase("Yawgmoth's Bargain")){
+            if(bannedList.contains(card.getCardName())){
                 EDHBannedList.add(card);
             }
         }

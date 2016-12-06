@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Collections;
 import java.util.EnumSet;
 
@@ -42,15 +42,16 @@ public class UserInterface extends Application {
     private final ToggleButton colorlessButton = new ToggleButton();
     private final Button resetButton = new Button("Reset");
     private final Button formatButton = new Button("GO");
+    private boolean isComboBoxEmpty = true;
     private final ChoiceBox<String> formatsOptions = new ChoiceBox<>(
             FXCollections.observableArrayList("Standard","Modern","Legacy","Vintage","Commander (EDH)"));
 
     private final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
+
     private final UIController controller = new UIController();
 
     private final ObservableList<Card> cardObservableList = FXCollections.observableArrayList();
     private final ObservableList<Card> filteredList = FXCollections.observableArrayList();
-
     private ObservableList<Card> observableDeckList = FXCollections.observableArrayList();
 
     @Override
@@ -59,13 +60,11 @@ public class UserInterface extends Application {
         primaryStage.setTitle("Magic: the Gathering Deck Editor");
         primaryStage.setScene(createScene());
         primaryStage.show();
-        try {
-            controller.setUpListOfAllSets();
-            controller.setUpListOfAllCards();
-            cardObservableList.addAll(controller.getFullCardList());
-            Collections.sort(cardObservableList);
-            cardListOutput.setItems(cardObservableList);
-            cardListOutput.setCellFactory(lv -> new ListCell<Card>(){
+        controller.setUpAll();
+        cardObservableList.addAll(controller.getFullCardList());
+        Collections.sort(cardObservableList);
+        cardListOutput.setItems(cardObservableList);
+        cardListOutput.setCellFactory(lv -> new ListCell<Card>(){
                 @Override
                 public void updateItem(Card card, boolean empty){
                     super.updateItem(card, empty);
@@ -77,9 +76,6 @@ public class UserInterface extends Application {
                     }
                 }
             });
-        } catch (IOException | SAXException e) {
-            e.printStackTrace();
-        }
     }
 
     private Scene createScene() {
@@ -102,12 +98,16 @@ public class UserInterface extends Application {
         blackButton.setSelected(false);
         greenButton.setSelected(false);
         colorlessButton.setSelected(false);
-        cardListOutput.setItems(cardObservableList);
+        if(isComboBoxEmpty){
+            cardListOutput.setItems(cardObservableList);
+        }
+        else{
+            cardListOutput.setItems(controller.getFormatCardList());
+        }
     }
 
     private void useAllFilters(String term) {
-
-        if(!formatsOptions.getValue().equals(null)){
+        if(!isComboBoxEmpty) {
             controller.searchForTermInFormat(formatsOptions.getValue(), term);
         }
         else{
@@ -234,6 +234,7 @@ public class UserInterface extends Application {
 
     private void getChoice(ChoiceBox<String> formatsOptions){
 
+        isComboBoxEmpty = false;
         String formats = formatsOptions.getValue();
         if(formats.equals("Legacy")){
             chooseFormat(controller.buildLegacyFormat());
@@ -279,15 +280,7 @@ public class UserInterface extends Application {
 
     private Scene designLayoutForBoxes(){
 
-        BorderPane root = new BorderPane();
-        VBox container = new VBox();
         MenuBar mainMenu = new MenuBar();
-
-        ToolBar toolBar = new ToolBar();
-
-        container.getChildren().add(mainMenu);
-        container.getChildren().add(toolBar);
-        root.setTop(container);
 
         Menu file = new Menu("File");
         Menu help = new Menu("Help");
@@ -298,7 +291,9 @@ public class UserInterface extends Application {
         MenuItem quit = new MenuItem("Quit");
         file.getItems().addAll(openFile, saveFile, quit);
 
-        VBox optionBox = new VBox(container);
+        //openFile.setOnAction(event -> openDeckFile());
+        saveFile.setOnAction(event -> saveDeckFile());
+        quit.setOnAction(event -> System.exit(0));
 
         HBox setSearchAndResearchBars = new HBox(resetButton,searchButton);
         setSearchAndResearchBars.setSpacing(300);
@@ -322,18 +317,21 @@ public class UserInterface extends Application {
         formatBox.setSpacing(10);
         formatsArea.setSpacing(10);
 
-        HBox base = new HBox(optionBox,searchBarAndCardListResults, cardInfoDisplay, formatBox);
+        HBox base = new HBox(searchBarAndCardListResults, cardInfoDisplay, formatBox);
+        VBox layout = new VBox(mainMenu,base);
         base.setPadding(new Insets(10,10,10,10));
         base.setSpacing(5);
 
         setStylesForButton();
         cardInfo.setEditable(false);
 
-        return new Scene(base);
+        return new Scene(layout);
     }
 
     private void setStylesForButton(){
 
+        searchButton.setPrefWidth(100);
+        resetButton.setPrefWidth(100);
         addCardToMainDeck.setPrefWidth(200);
         removeCardFromMainDeck.setPrefWidth(200);
         addCardToSideboard.setPrefWidth(200);
@@ -351,6 +349,19 @@ public class UserInterface extends Application {
         cardNames.prefWidthProperty().bind(deckListOutput.widthProperty().multiply(0.7));
         frequencyOfCard.setResizable(false);
         cardNames.setResizable(false);
+    }
+
+    private void saveDeckFile(){
+        try{
+            FileOutputStream output = new FileOutputStream("output");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(output);
+            objectOutputStream.writeObject(observableDeckList);
+            objectOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

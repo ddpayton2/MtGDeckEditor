@@ -37,13 +37,14 @@ public class CardFilter {
 
     public void filterByFormat(List<Card> list, Format format) {
 
-        Collections.sort(list);
         cardFormatList.clear();
         for(Card card : list){
-            if(format.getLegalMtgSetsNames().containsAll(card.getSetsPrintedIn()) && !format.getBannedList().contains(card)){
+            if(format.getLegalMtgSetsNames().containsAll(card.getSetsPrintedIn())){
                 cardFormatList.add(card);
+                cardFormatList.remove(format.getBannedList());
             }
         }
+        Collections.sort(cardFormatList);
     }
 
     public List<Card> getCardFormatList(){

@@ -29,6 +29,24 @@ public class UIController {
     private final CardFilter filter = new CardFilter();
     private final ObservableList<Card> formatCardList = FXCollections.observableArrayList();
 
+    public void setUpAll(){
+        try {
+            setUpListOfAllCards();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        try {
+            setUpListOfAllSets();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        buildAllFormats();
+    }
+
     public void setUpListOfAllCards() throws IOException, SAXException {
         SAXParserFactory spfac = SAXParserFactory.newInstance();
         SAXParser sp = null;
@@ -102,6 +120,13 @@ public class UIController {
         return edh;
     }
 
+    public void buildAllFormats(){
+        standard = buildStandardFormat();
+        modern = buildModernFormat();
+        legacy = buildLegacyFormat();
+        vintage = buildVintageFormat();
+        edh = buildEDHFormat();
+    }
     public List<Card> filterByColor(EnumSet<CardColor> colors){
         filter.filterByCardColor(filter.getCardsWithTerm(), colors);
         return filter.getFilteredCardList();
@@ -120,7 +145,6 @@ public class UIController {
         formatCardList.clear();
         filter.filterByFormat(fullCardList, format);
         formatCardList.addAll(filter.getCardFormatList());
-        Collections.sort(formatCardList);
         return formatCardList;
     }
 
@@ -133,5 +157,9 @@ public class UIController {
             }
         }
         return filter.getCardsWithTerm();
+    }
+
+    public ObservableList<Card> getFormatCardList(){
+        return formatCardList;
     }
 }
