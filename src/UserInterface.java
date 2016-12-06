@@ -58,6 +58,7 @@ public class UserInterface extends Application {
     private final Tooltip blackButtonToolTip = new Tooltip();
     private final Tooltip redButtonToolTip = new Tooltip();
     private final Tooltip greenButtonToolTip = new Tooltip();
+    private final Tooltip colorlessButtonToolTip = new Tooltip();
     private final Tooltip resetButtonToolTip = new Tooltip();
     private final Tooltip searchButtonToolTip = new Tooltip();
     private final Tooltip addCardToMainDeckToolTip = new Tooltip();
@@ -107,6 +108,7 @@ public class UserInterface extends Application {
         blackButton.setTooltip(blackButtonToolTip);
         redButton.setTooltip(redButtonToolTip);
         greenButton.setTooltip(greenButtonToolTip);
+        colorlessButton.setTooltip(colorlessButtonToolTip);
         resetButton.setTooltip(resetButtonToolTip);
         searchButton.setTooltip(searchBarToolTip);
         addCardToMainDeck.setTooltip(addCardToMainDeckToolTip);
@@ -122,6 +124,7 @@ public class UserInterface extends Application {
         blackButtonToolTip.setText("This lets you see cards that contain the color black.");
         redButtonToolTip.setText("This lets you see cards that contain the color red.");
         greenButtonToolTip.setText("This lets you see cards that contain the color green.");
+        colorlessButtonToolTip.setText("This lets you see cards that are colorless or need waste mana.");
         resetButtonToolTip.setText("This resets the search term field, all buttons," +
                 " and outputted card list area from the selected format.");
         searchButtonToolTip.setText("Lets you search for the term you have" +
