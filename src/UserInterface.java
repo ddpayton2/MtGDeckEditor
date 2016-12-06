@@ -8,11 +8,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
 import java.io.*;
 import java.util.Collections;
@@ -54,6 +52,19 @@ public class UserInterface extends Application {
     private final ObservableList<Card> filteredList = FXCollections.observableArrayList();
     private ObservableList<Card> observableDeckList = FXCollections.observableArrayList();
 
+    private final Tooltip searchBarToolTip = new Tooltip();
+    private final Tooltip whiteButtonToolTip = new Tooltip();
+    private final Tooltip blueButtonToolTip = new Tooltip();
+    private final Tooltip blackButtonToolTip = new Tooltip();
+    private final Tooltip redButtonToolTip = new Tooltip();
+    private final Tooltip greenButtonToolTip = new Tooltip();
+    private final Tooltip resetButtonToolTip = new Tooltip();
+    private final Tooltip searchButtonToolTip = new Tooltip();
+    private final Tooltip addCardToMainDeckToolTip = new Tooltip();
+    private final Tooltip removeCardFromMainDeckToolTip = new Tooltip();
+    private final Tooltip formatBoxToolTip = new Tooltip();
+    private final Tooltip formatGoButtonToolTip = new Tooltip();
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -79,7 +90,8 @@ public class UserInterface extends Application {
     }
 
     private Scene createScene() {
-
+        createAllToolTipText();
+        setAllToolTips();
         setUpDeckListOutputTable();
         cardListOutput.setEditable(false);
         cardInfo.setEditable(false);
@@ -87,6 +99,40 @@ public class UserInterface extends Application {
         setActionForButtons();
         return designLayoutForBoxes();
     }
+
+    private void setAllToolTips(){
+        searchTermInputArea.setTooltip(searchBarToolTip);
+        whiteButton.setTooltip(whiteButtonToolTip);
+        blueButton.setTooltip(blueButtonToolTip);
+        blackButton.setTooltip(blackButtonToolTip);
+        redButton.setTooltip(redButtonToolTip);
+        greenButton.setTooltip(greenButtonToolTip);
+        resetButton.setTooltip(resetButtonToolTip);
+        searchButton.setTooltip(searchBarToolTip);
+        addCardToMainDeck.setTooltip(addCardToMainDeckToolTip);
+        removeCardFromMainDeck.setTooltip(removeCardFromMainDeckToolTip);
+        formatsOptions.setTooltip(formatBoxToolTip);
+        formatButton.setTooltip(formatGoButtonToolTip);
+    }
+
+    private void createAllToolTipText(){
+        searchBarToolTip.setText("Enter a word you wish to search for.");
+        whiteButtonToolTip.setText("This lets you see cards that contain the color white.");
+        blueButtonToolTip.setText("This lets you see cards that contain the color blue.");
+        blackButtonToolTip.setText("This lets you see cards that contain the color black.");
+        redButtonToolTip.setText("This lets you see cards that contain the color red.");
+        greenButtonToolTip.setText("This lets you see cards that contain the color green.");
+        resetButtonToolTip.setText("This resets the search term field, all buttons," +
+                " and outputted card list area from the selected format.");
+        searchButtonToolTip.setText("Lets you search for the term you have" +
+                " written in the text box in your selected format.");
+        addCardToMainDeckToolTip.setText("Adds one the selected card to deck list box.");
+        removeCardFromMainDeckToolTip.setText("Removes the selected card in the deck list from the deck list");
+        formatBoxToolTip.setText("Select the format you want to build a deck in.");
+        formatGoButtonToolTip.setText("Changes the outputted list of cards to " +
+                "ones that are legal in your selected format.");
+    }
+
 
     private void resetAllOutputFields() {
 
