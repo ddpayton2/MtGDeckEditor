@@ -8,13 +8,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.EnumSet;
 
@@ -61,6 +62,7 @@ public class UserInterface extends Application {
         primaryStage.setScene(createScene());
         primaryStage.show();
         controller.setUpAll();
+        controller.buildAllFormats();
         cardObservableList.addAll(controller.getFullCardList());
         Collections.sort(cardObservableList);
         cardListOutput.setItems(cardObservableList);
@@ -123,7 +125,27 @@ public class UserInterface extends Application {
 
     private void chooseFormat(Format format){
 
-        cardListOutput.setItems(controller.retrieveLegalCardsForFormat(format));
+        if(format.getFormatName().equalsIgnoreCase("Standard")){
+            cardObservableList.clear();
+            cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getStandard()));
+        }
+        else if (format.getFormatName().equalsIgnoreCase("Modern")){
+            cardObservableList.clear();
+            cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getModern()));
+        }
+        else if (format.getFormatName().equalsIgnoreCase("Legacy")){
+            cardObservableList.clear();
+            cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getLegacy()));
+        }
+        else if(format.getFormatName().equalsIgnoreCase("Vintage")){
+            cardObservableList.clear();
+            cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getVintage()));
+        }
+        else if(format.getFormatName().equalsIgnoreCase("Commander (EDH)")){
+            cardObservableList.clear();
+            cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getEdh()));
+        }
+        cardListOutput.setItems(cardObservableList);
     }
 
     private void displayFilteredByColorList(){
@@ -236,20 +258,20 @@ public class UserInterface extends Application {
 
         isComboBoxEmpty = false;
         String formats = formatsOptions.getValue();
-        if(formats.equals("Legacy")){
-            chooseFormat(controller.buildLegacyFormat());
+        if(formats.equalsIgnoreCase("Legacy")){
+            chooseFormat(controller.getLegacy());
         }
-        else if(formats.equals("Modern")){
-            chooseFormat(controller.buildModernFormat());
+        else if(formats.equalsIgnoreCase("Modern")){
+            chooseFormat(controller.getModern());
         }
-        else if(formats.equals("Standard")){
-            chooseFormat(controller.buildStandardFormat());
+        else if(formats.equalsIgnoreCase("Standard")){
+            chooseFormat(controller.getStandard());
         }
-        else if(formats.equals("Vintage")){
-            chooseFormat(controller.buildVintageFormat());
+        else if(formats.equalsIgnoreCase("Vintage")){
+            chooseFormat(controller.getVintage());
         }
-        else if(formats.equals("Commander (EDH)")){
-            chooseFormat(controller.buildEDHFormat());
+        else if(formats.equalsIgnoreCase("Commander (EDH)")){
+            chooseFormat(controller.getEdh());
         }
     }
 

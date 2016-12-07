@@ -17,10 +17,21 @@ public class ModernFormat extends Format{
     }
 
     public void buildModernLegalSetsList(List<MtgSet> list){
+        List<MtgSet> temp = Lists.newArrayList();
         LocalDate eighthEdReleaseDate = LocalDate.of(2003,7,28);
-        modernLegalMtgSets.addAll(list.stream().filter(mtgSet -> (mtgSet.getReleaseDate().isEqual(eighthEdReleaseDate) && (mtgSet.getMtgSetType().equalsIgnoreCase("Expansion")
+        for(MtgSet set : list) {
+            if (set.getReleaseDate().isEqual(eighthEdReleaseDate) || set.getReleaseDate().isAfter(eighthEdReleaseDate)) {
+                temp.add(set);
+            }
+        }
+        for(MtgSet modernSet : temp){
+            if(modernSet.getMtgSetType().equalsIgnoreCase("Expansion") || modernSet.getMtgSetType().equalsIgnoreCase("Core")){
+                modernLegalMtgSets.add(modernSet);
+            }
+        }
+        /*modernLegalMtgSets.addAll(list.stream().filter(mtgSet -> (mtgSet.getReleaseDate().isEqual(eighthEdReleaseDate) && (mtgSet.getMtgSetType().equalsIgnoreCase("Expansion")
                 || mtgSet.getMtgSetType().equalsIgnoreCase("Core"))) || (mtgSet.getReleaseDate().isAfter(eighthEdReleaseDate)
-                && (mtgSet.getMtgSetType().equalsIgnoreCase("Expansion")) || mtgSet.getMtgSetType().equalsIgnoreCase("Core"))).collect(Collectors.toList()));
+                && (mtgSet.getMtgSetType().equalsIgnoreCase("Expansion")) || mtgSet.getMtgSetType().equalsIgnoreCase("Core"))).collect(Collectors.toList()));*/
     }
 
     public void buildModernBannedList(List<Card> cardList){

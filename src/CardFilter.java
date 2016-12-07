@@ -35,19 +35,16 @@ public class CardFilter {
         return this.searchTermList;
     }
 
-    public void filterByFormat(List<Card> list, Format format) {
+    public List<Card> filterByFormat(List<Card> list, Format format) {
 
         cardFormatList.clear();
         for(Card card : list){
             if(format.getLegalMtgSetsNames().containsAll(card.getSetsPrintedIn())){
                 cardFormatList.add(card);
-                cardFormatList.remove(format.getBannedList());
             }
         }
+        cardFormatList.remove(format.getBannedList());
         Collections.sort(cardFormatList);
-    }
-
-    public List<Card> getCardFormatList(){
-        return this.cardFormatList;
+        return cardFormatList;
     }
 }

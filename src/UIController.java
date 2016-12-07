@@ -26,8 +26,13 @@ public class UIController {
     private Format legacy;
     private Format vintage;
     private Format edh;
+    private List<Card> standardCardList = Lists.newArrayList();
+    private List<Card> modernCardList = Lists.newArrayList();
+    private List<Card> legacyCardList = Lists.newArrayList();
+    private List<Card> vintageCardList = Lists.newArrayList();
+    private List<Card> edhCardList = Lists.newArrayList();
+    private ObservableList<Card> formatCardList = FXCollections.observableArrayList();
     private final CardFilter filter = new CardFilter();
-    private final ObservableList<Card> formatCardList = FXCollections.observableArrayList();
 
     public void setUpAll(){
         try {
@@ -80,10 +85,19 @@ public class UIController {
         Collections.sort(fullMtgSetList);
     }
 
+    public void buildAllFormats(){
+        standard = buildStandardFormat();
+        modern = buildModernFormat();
+        legacy = buildLegacyFormat();
+        vintage = buildVintageFormat();
+        edh = buildEDHFormat();
+    }
+
     public Format buildStandardFormat(){
         StandardFormat standardFormat = new StandardFormat(standardFormatBuilder);
         standardFormat.buildStandardLegalSetsList(fullMtgSetList);
         standard = standardFormat.buildStandardFormat();
+        standardCardList.addAll(filter.filterByFormat(fullCardList, standard));
         return standard;
     }
 
@@ -92,6 +106,7 @@ public class UIController {
         modernFormat.buildModernLegalSetsList(fullMtgSetList);
         modernFormat.buildModernBannedList(fullCardList);
         modern = modernFormat.buildModernFormat();
+        modernCardList.addAll(filter.filterByFormat(fullCardList, modern));
         return modern;
     }
 
@@ -100,6 +115,7 @@ public class UIController {
         legacyFormat.buildLegacyLegalSetsList(fullMtgSetList);
         legacyFormat.buildLegacyBannedList(fullCardList);
         legacy = legacyFormat.buildLegacyFormat();
+        legacyCardList.addAll(filter.filterByFormat(fullCardList, legacy));
         return legacy;
     }
 
@@ -109,6 +125,7 @@ public class UIController {
         vintageFormat.buildVintageBannedList(fullCardList);
         vintageFormat.buildVintageRestrictedList(fullCardList);
         vintage = vintageFormat.buildVintageFormat();
+        vintageCardList.addAll(filter.filterByFormat(fullCardList, vintage));
         return vintage;
     }
 
@@ -117,16 +134,10 @@ public class UIController {
         edhFormat.buildEDHLegalSetList(fullMtgSetList);
         edhFormat.buildEDHBannedList(fullCardList);
         edh = edhFormat.buildEDHFormat();
+        edhCardList.addAll(filter.filterByFormat(fullCardList, edh));
         return edh;
     }
 
-    public void buildAllFormats(){
-        standard = buildStandardFormat();
-        modern = buildModernFormat();
-        legacy = buildLegacyFormat();
-        vintage = buildVintageFormat();
-        edh = buildEDHFormat();
-    }
     public List<Card> filterByColor(EnumSet<CardColor> colors){
         filter.filterByCardColor(filter.getCardsWithTerm(), colors);
         return filter.getFilteredCardList();
@@ -141,10 +152,17 @@ public class UIController {
         return fullCardList;
     }
 
-    public ObservableList<Card> retrieveLegalCardsForFormat(Format format) {
+    public List<Card> retrieveLegalCardsForFormat(Format format) {
         formatCardList.clear();
-        filter.filterByFormat(fullCardList, format);
-        formatCardList.addAll(filter.getCardFormatList());
+        if(format.getFormatName().equalsIgnoreCase("Standard")){
+            formatCardList.addAll(standardCardList);
+        }
+        else if(format.getFormatName().equalsIgnoreCase("Modern")){
+            formatCardList.addAll(modernCardList);
+        }
+        else if(format.getFormatName().equalsIgnoreCase("Legacy")){
+            formatCardList.addAll(legacyCardList);
+        }
         return formatCardList;
     }
 
@@ -161,5 +179,25 @@ public class UIController {
 
     public ObservableList<Card> getFormatCardList(){
         return formatCardList;
+    }
+
+    public Format getStandard(){
+        return standard;
+    }
+
+    public Format getModern(){
+        return modern;
+    }
+
+    public Format getLegacy(){
+        return legacy;
+    }
+
+    public Format getVintage(){
+        return vintage;
+    }
+
+    public Format getEdh(){
+        return edh;
     }
 }
