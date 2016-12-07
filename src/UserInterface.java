@@ -13,10 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Collections;
 import java.util.EnumSet;
 
@@ -374,20 +371,6 @@ public class UserInterface extends Application {
         cardNames.setResizable(false);
     }
 
-//    private void saveDeckFile(){
-//        try{
-//
-//            FileOutputStream output = new FileOutputStream("output");
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(output);
-//            objectOutputStream.writeObject(observableDeckList);
-//            objectOutputStream.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     private void saveDeckFile(){
         try{
             FileChooser fileChooser = new FileChooser();
@@ -396,18 +379,15 @@ public class UserInterface extends Application {
             File file = fileChooser.showSaveDialog(null);
 
             if (file != null){
-                FileWriter fileWriter;
+                BufferedWriter fileWriter;
 
-                fileWriter = new FileWriter(file);
+                fileWriter = new BufferedWriter(new FileWriter(file));
                 for(int i = 0; i < observableDeckList.size(); i++){
-                    fileWriter.write(observableDeckList.get(i).getCardName() + "\n");
+                    fileWriter.write(observableDeckList.get(i).getCardName());
+                    fileWriter.newLine();
                 }
                 fileWriter.close();
             }
-//            FileOutputStream output = new FileOutputStream(file);
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(output);
-//            objectOutputStream.writeObject(observableDeckList);
-//            objectOutputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -423,8 +403,27 @@ public class UserInterface extends Application {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null){
-
-            //deckListOutput.getItems().add(selectedFile.getAbsolutePath()
+            try {
+                observableDeckList.clear();
+                BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+                String line;
+                while((line = reader.readLine()) != null){
+                    for(Card card : controller.getFullCardList()){
+                        if(card.getCardName().equalsIgnoreCase(line)){
+                            observableDeckList.add(card);
+                        }
+                    }
+                }
+                deckListOutput.setItems(observableDeckList);
+                cardNames.setCellValueFactory(
+                        new PropertyValueFactory("cardName")
+                );
+                reader.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
         }
