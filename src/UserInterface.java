@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
@@ -291,7 +292,7 @@ public class UserInterface extends Application {
         MenuItem quit = new MenuItem("Quit");
         file.getItems().addAll(openFile, saveFile, quit);
 
-        //openFile.setOnAction(event -> openDeckFile());
+        openFile.setOnAction(event -> openDeckFile());
         saveFile.setOnAction(event -> saveDeckFile());
         quit.setOnAction(event -> System.exit(0));
 
@@ -351,16 +352,59 @@ public class UserInterface extends Application {
         cardNames.setResizable(false);
     }
 
+//    private void saveDeckFile(){
+//        try{
+//
+//            FileOutputStream output = new FileOutputStream("output");
+//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(output);
+//            objectOutputStream.writeObject(observableDeckList);
+//            objectOutputStream.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     private void saveDeckFile(){
         try{
-            FileOutputStream output = new FileOutputStream("output");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(output);
-            objectOutputStream.writeObject(observableDeckList);
-            objectOutputStream.close();
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extensionFilter =new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+            File file = fileChooser.showSaveDialog(null);
+
+            if (file != null){
+                FileWriter fileWriter;
+
+                fileWriter = new FileWriter(file);
+                for(int i = 0; i < observableDeckList.size(); i++){
+                    fileWriter.write(observableDeckList.get(i).getCardName() + "\n");
+                }
+                fileWriter.close();
+            }
+//            FileOutputStream output = new FileOutputStream(file);
+//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(output);
+//            objectOutputStream.writeObject(observableDeckList);
+//            objectOutputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void openDeckFile(){
+
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter =new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null){
+
+            //deckListOutput.getItems().add(selectedFile.getAbsolutePath()
+
+
         }
     }
 }
