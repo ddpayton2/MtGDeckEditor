@@ -163,6 +163,12 @@ public class UIController {
         else if(format.getFormatName().equalsIgnoreCase("Legacy")){
             formatCardList.addAll(legacyCardList);
         }
+        else if(format.getFormatName().equalsIgnoreCase("Vintage")){
+            formatCardList.addAll(vintageCardList);
+        }
+        else if(format.getFormatName().equalsIgnoreCase("Commander (EDH)")){
+            formatCardList.addAll(edhCardList);
+        }
         return formatCardList;
     }
 
