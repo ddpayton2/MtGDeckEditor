@@ -46,10 +46,9 @@ public class UIBuilder {
     public final ChoiceBox<String> formatsOptions = new ChoiceBox<>(
             FXCollections.observableArrayList("Standard","Modern","Legacy","Vintage","Commander (EDH)"));
 
-    public final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
-
     public final UIController controller = new UIController();
 
+    public final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
     public final ObservableList<Card> cardObservableList = FXCollections.observableArrayList();
     public final ObservableList<Card> filteredList = FXCollections.observableArrayList();
     public ObservableList<Card> observableDeckList = FXCollections.observableArrayList();

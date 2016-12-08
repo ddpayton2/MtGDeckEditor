@@ -153,6 +153,7 @@ public class UIController {
     }
 
     public List<Card> retrieveLegalCardsForFormat(Format format) {
+
         formatCardList.clear();
         if(format.getFormatName().equalsIgnoreCase("Standard")){
             formatCardList.addAll(standardCardList);
@@ -177,7 +178,7 @@ public class UIController {
         List<Format> allFormats = Lists.newArrayList(standard, modern, legacy, vintage, edh);
         for(Format format : allFormats){
             if(format.getFormatName().equalsIgnoreCase(formatName)){
-                filter.findTerm(retrieveLegalCardsForFormat(format), term);
+                filter.findTerm(getFormatCardList(), term);
             }
         }
         return filter.getCardsWithTerm();

@@ -38,12 +38,12 @@ public class UserInterface extends UIBuilder{
     private void useAllFilters(String term) {
 
         if(!isComboBoxEmpty) {
-            controller.searchForTermInFormat(formatsOptions.getValue(), term);
+            cardListOutput.setItems(FXCollections.observableArrayList(controller.searchForTermInFormat(formatsOptions.getValue(), term)));
         }
         else{
             searchForTerm(term);
         }
-        displayFilteredByColorList();
+        displayFilteredList();
     }
 
     private void resetAllOutputFields() {
@@ -104,7 +104,7 @@ public class UserInterface extends UIBuilder{
         cardListOutput.setItems(FXCollections.observableArrayList(controller.search(text)));
     }
 
-    private void displayFilteredByColorList(){
+    private void displayFilteredList(){
 
         selectedColors.clear();
         if (whiteButton.isSelected() || blueButton.isSelected() || blackButton.isSelected()
@@ -247,6 +247,4 @@ public class UserInterface extends UIBuilder{
             }
         });
     }
-
-
 }
