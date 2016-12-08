@@ -2,10 +2,12 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -73,7 +75,7 @@ public class UIBuilder {
 
     public void main(Stage primaryStage) {
 
-        primaryStage.setScene(new Scene(new Label("Loading, please wait.")));
+        primaryStage.setScene(designLayoutForLoading());
         primaryStage.show();
 
         ExecutorService service= Executors.newCachedThreadPool();
@@ -217,7 +219,19 @@ public class UIBuilder {
 
         setStylesForButton();
         cardInfo.setEditable(false);
+        layout.setPrefSize(1000,650);
         return new Scene(layout);
+    }
+
+    private Scene designLayoutForLoading(){
+
+        Image loadingImage = new Image(getClass().getResourceAsStream("Loading.gif"));
+        ImageView loadingImageView = new ImageView(loadingImage);
+        VBox base = new VBox(new Label("         Loading, please wait.  "), loadingImageView);
+        
+        base.setAlignment(Pos.CENTER);
+        base.setPrefSize(1000,650);
+        return new Scene(base);
     }
 
     private VBox buildFormatAndDeckListArea() {
