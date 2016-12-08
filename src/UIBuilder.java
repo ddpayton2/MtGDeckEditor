@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -75,6 +74,7 @@ public class UIBuilder {
 
     public void main(Stage primaryStage) {
 
+        primaryStage.setTitle("Magic: the Gathering Deck Editor");
         primaryStage.setScene(designLayoutForLoading());
         primaryStage.show();
 
@@ -225,7 +225,7 @@ public class UIBuilder {
 
     private Scene designLayoutForLoading(){
 
-        Image loadingImage = new Image(getClass().getResourceAsStream("Loading.gif"));
+        Image loadingImage = new Image(getClass().getResourceAsStream("mana.gif"));
         ImageView loadingImageView = new ImageView(loadingImage);
         VBox base = new VBox(new Label("         Loading, please wait.  "), loadingImageView);
         

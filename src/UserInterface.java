@@ -6,6 +6,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.Collections;
 
 @SuppressWarnings("WeakerAccess")
 public class UserInterface extends UIBuilder{
@@ -37,8 +38,11 @@ public class UserInterface extends UIBuilder{
 
     private void useAllFilters(String term) {
 
+        cardObservableList.clear();
         if(!isComboBoxEmpty) {
-            cardListOutput.setItems(FXCollections.observableArrayList(controller.searchForTermInFormat(formatsOptions.getValue(), term)));
+            cardObservableList.addAll(controller.searchForTermInFormat(formatsOptions.getValue(), term));
+            Collections.sort(cardObservableList);
+            cardListOutput.setItems(cardObservableList);
         }
         else{
             searchForTerm(term);
@@ -56,6 +60,7 @@ public class UserInterface extends UIBuilder{
         blackButton.setSelected(false);
         greenButton.setSelected(false);
         colorlessButton.setSelected(false);
+
         if(isComboBoxEmpty){
             cardListOutput.setItems(cardObservableList);
         }
@@ -131,6 +136,7 @@ public class UserInterface extends UIBuilder{
                 selectedColors.add(CardColor.COLORLESS);
             }
         }
+        filteredList.clear();
         filteredList.setAll(controller.filterByColor(selectedColors));
         cardListOutput.setItems(filteredList);
     }
