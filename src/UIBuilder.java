@@ -227,10 +227,16 @@ public class UIBuilder {
 
         Image loadingImage = new Image(getClass().getResourceAsStream("mana.gif"));
         ImageView loadingImageView = new ImageView(loadingImage);
+        String image = getClass().getResource("manaSymbols.png").toExternalForm();
+
         VBox base = new VBox(new Label("         Loading, please wait.  "), loadingImageView);
-        
+
+        base.setStyle("-fx-background-image: url('" + image + "'); " +
+                "-fx-background-position: center center; " +
+                "-fx-background-repeat: stretch;");
         base.setAlignment(Pos.CENTER);
         base.setPrefSize(1000,650);
+
         return new Scene(base);
     }
 
