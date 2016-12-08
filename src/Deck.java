@@ -10,6 +10,7 @@ public class Deck {
         private int minimumNumberOfCardsInMain;
         private int maximumNumberOfCardsInMain;
         private int maximumNumberOfCardsInSide;
+        private int minimumNumberOfCardsInSide;
         private int maximumCopiesOfCard;
         private boolean isDeckLegal;
 
@@ -38,6 +39,11 @@ public class Deck {
             return this;
         }
 
+        public Builder setMinimumNumberOfCardsInSide(int minNumber){
+            this.minimumNumberOfCardsInSide = minNumber;
+            return this;
+        }
+
         public Builder setDeckLegal(boolean deckLegal) {
             isDeckLegal = deckLegal;
             return this;
@@ -58,14 +64,17 @@ public class Deck {
     private int minimumNumberOfCardsInMain;
     private int maximumNumberOfCardsInMain;
     private int maximumNumberOfCardsInSide;
+    private int minimumNumberOfCardsInSide;
     private boolean isDeckLegal;
 
+    @SuppressWarnings("WeakerAccess")
     public Deck(Builder builder){
         this.deckListMain = builder.mainboard;
         this.deckListSide = builder.sideboard;
         this.maximumNumberOfCardsInMain = builder.maximumNumberOfCardsInMain;
         this.minimumNumberOfCardsInMain = builder.minimumNumberOfCardsInMain;
         this.maximumNumberOfCardsInSide = builder.maximumNumberOfCardsInSide;
+        this.maximumNumberOfCardsInSide = builder.minimumNumberOfCardsInSide;
         this.isDeckLegal = builder.isDeckLegal;
     }
 
@@ -79,6 +88,10 @@ public class Deck {
 
     public int getMaximumNumberOfCardsInSide(){
         return this.maximumNumberOfCardsInSide;
+    }
+
+    public int getMinimumNumberOfCardsInSide(){
+        return this.minimumNumberOfCardsInSide;
     }
 
     public boolean getIsDeckLegal(){

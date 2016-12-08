@@ -15,6 +15,7 @@ import java.util.EnumSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@SuppressWarnings("WeakerAccess")
 public class UIBuilder {
 
     public final TextField searchTermInputArea = new TextField();

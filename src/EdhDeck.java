@@ -3,7 +3,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
-public class SixtyCardDeck extends Deck {
+public class EdhDeck extends Deck{
 
     private List<Card> mainboard = Lists.newArrayList();
     private List<Card> sideboard = Lists.newArrayList();
@@ -11,14 +11,15 @@ public class SixtyCardDeck extends Deck {
     private int numberOfCardsInSideboard;
     private final Deck.Builder builder = new Deck.Builder();
 
-    public SixtyCardDeck(Deck.Builder builder){
+    public EdhDeck (Deck.Builder builder){
         super(builder);
     }
 
-    public Deck buildSixtyCardDeck(){
-        builder.setMinimumNumberOfCardsInMain(60)
-                .setMaximumNumberOfCardsInSide(15)
-                .setMaximumCopiesOfCard(4)
+    public Deck buildEdhDeck(){
+        builder.setMinimumNumberOfCardsInMain(99)
+                .setMaximumNumberOfCardsInMain(99)
+                .setMinimumNumberOfCardsInSide(1)
+                .setMaximumNumberOfCardsInSide(1)
                 .setMainCardList()
                 .setSideCardList()
                 .setDeckLegal(false)

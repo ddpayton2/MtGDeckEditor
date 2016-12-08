@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 
+@SuppressWarnings("WeakerAccess")
 public class UserInterface extends UIBuilder{
 
     public void launch(Stage primaryStage) {
@@ -88,6 +89,7 @@ public class UserInterface extends UIBuilder{
 
         observableDeckList.add(cardListOutput.getSelectionModel().getSelectedItem());
         deckListOutput.setItems(observableDeckList);
+        //noinspection unchecked
         cardNames.setCellValueFactory(
                 new PropertyValueFactory("cardName")
         );
@@ -182,6 +184,7 @@ public class UserInterface extends UIBuilder{
                     }
                 }
                 deckListOutput.setItems(observableDeckList);
+                //noinspection unchecked
                 cardNames.setCellValueFactory(
                         new PropertyValueFactory("cardName")
                 );
