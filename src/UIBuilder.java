@@ -229,10 +229,14 @@ public class UIBuilder {
         Image loadingImage = new Image(getClass().getResourceAsStream("mana.gif"));
         ImageView loadingImageView = new ImageView(loadingImage);
         VBox base = new VBox(loadingImageView);
-        base.setStyle("-fx-background-position: center center; " +
-                "-fx-background-repeat: stretch;");
+
         base.setAlignment(Pos.CENTER);
         base.setPrefSize(1000,650);
+        base.setStyle("-fx-background-color: #000000;");
+        loadingImageView.setFitHeight(360);
+        loadingImageView.setFitWidth(360);
+
+        base.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
         return new Scene(base);
     }
