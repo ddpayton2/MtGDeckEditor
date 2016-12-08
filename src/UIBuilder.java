@@ -228,15 +228,13 @@ public class UIBuilder {
 
         Image loadingImage = new Image(getClass().getResourceAsStream("mana.gif"));
         ImageView loadingImageView = new ImageView(loadingImage);
-
-        VBox base = new VBox(new Label("         Loading, please wait.  "), loadingImageView);
-
+        VBox base = new VBox(loadingImageView);
         base.setStyle("-fx-background-position: center center; " +
                 "-fx-background-repeat: stretch;");
         base.setAlignment(Pos.CENTER);
         base.setPrefSize(1000,650);
-        final Scene scene = new Scene(base, 1000, 650, Color.BLACK);
-        return scene;
+
+        return new Scene(base);
     }
 
     private VBox buildFormatAndDeckListArea() {
@@ -273,9 +271,8 @@ public class UIBuilder {
 
         MenuBar mainMenu = new MenuBar();
         Menu file = new Menu("File");
-        Menu help = new Menu("Help");
-        mainMenu.getMenus().addAll(file, help);
         file.getItems().addAll(newDeck, openFile, saveFile, quit);
+        mainMenu.getMenus().addAll(file);
         return mainMenu;
     }
 
@@ -295,8 +292,7 @@ public class UIBuilder {
     private void setUpDeckListOutputTable(){
 
         deckListOutput.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        deckListOutput.getColumns().addAll(frequencyOfCard,cardNames);
-        frequencyOfCard.prefWidthProperty().bind(deckListOutput.widthProperty().multiply(0.3));
+        deckListOutput.getColumns().addAll(cardNames);
         cardNames.prefWidthProperty().bind(deckListOutput.widthProperty().multiply(0.7));
         frequencyOfCard.setResizable(false);
         cardNames.setResizable(false);

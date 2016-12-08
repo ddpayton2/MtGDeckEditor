@@ -40,7 +40,7 @@ public class UserInterface extends UIBuilder{
 
         cardObservableList.clear();
         if(!isComboBoxEmpty) {
-            cardObservableList.addAll(controller.searchForTermInFormat(formatsOptions.getValue(), term));
+            cardObservableList.addAll(controller.getFormatCardList());
             Collections.sort(cardObservableList);
             cardListOutput.setItems(cardObservableList);
         }
