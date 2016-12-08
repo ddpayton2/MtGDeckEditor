@@ -62,6 +62,7 @@ public class EDHFormat extends Format{
                 "Upheaval",
                 "Worldfire",
                 "Yawgmoth's Bargain");
+
         for(Card card : allCardsList){
             if(card.getCardType().equalsIgnoreCase("Conspiracy")){
                 EDHBannedList.add(card);

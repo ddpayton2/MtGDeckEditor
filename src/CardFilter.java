@@ -39,11 +39,15 @@ public class CardFilter {
 
         cardFormatList.clear();
         for(Card card : list){
-            if(format.getLegalMtgSetsNames().containsAll(card.getSetsPrintedIn())){
+            if(!Collections.disjoint(format.getLegalMtgSetsNames(), card.getSetsPrintedIn())){
                 cardFormatList.add(card);
             }
         }
-        cardFormatList.remove(format.getBannedList());
+        for(Card card: format.getBannedList()){
+            if(format.getBannedList().contains(card)){
+                cardFormatList.remove(card);
+            }
+        }
         Collections.sort(cardFormatList);
         return cardFormatList;
     }
