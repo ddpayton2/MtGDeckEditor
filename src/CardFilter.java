@@ -15,6 +15,7 @@ public class CardFilter {
     public void filterByCardColor(List<Card> cardList, EnumSet<CardColor> colors){
         filteredCardList.clear();
         filteredCardList.addAll(cardList.stream().filter(card -> card.containsAllColors(colors)).collect(Collectors.toList()));
+        Collections.sort(filteredCardList);
     }
 
     public List<Card> getFilteredCardList(){

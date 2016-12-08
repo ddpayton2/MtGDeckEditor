@@ -7,8 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Collections;
@@ -75,6 +75,7 @@ public class UIBuilder {
     public void main(Stage primaryStage) {
 
         primaryStage.setTitle("Magic: the Gathering Deck Editor");
+        Scene scene = designLayoutForBoxes();
         primaryStage.setScene(designLayoutForLoading());
         primaryStage.show();
 
@@ -227,17 +228,15 @@ public class UIBuilder {
 
         Image loadingImage = new Image(getClass().getResourceAsStream("mana.gif"));
         ImageView loadingImageView = new ImageView(loadingImage);
-        String image = getClass().getResource("manaSymbols.png").toExternalForm();
 
         VBox base = new VBox(new Label("         Loading, please wait.  "), loadingImageView);
 
-        base.setStyle("-fx-background-image: url('" + image + "'); " +
-                "-fx-background-position: center center; " +
+        base.setStyle("-fx-background-position: center center; " +
                 "-fx-background-repeat: stretch;");
         base.setAlignment(Pos.CENTER);
         base.setPrefSize(1000,650);
-
-        return new Scene(base);
+        final Scene scene = new Scene(base, 1000, 650, Color.BLACK);
+        return scene;
     }
 
     private VBox buildFormatAndDeckListArea() {
