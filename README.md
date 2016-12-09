@@ -11,8 +11,10 @@ guava
 
 Project Description:
 This program will be a deck editor for the Magic: the Gathering trading card game. Users will be able to search for cards, read card information,
-build a deck for a format of their choosing, and will be able to import/export/save/load decks.
+build a deck for a format of their choosing, and will be able to import/save/load decks.
 
 Features:
 Users are able to search for cards by entering a search term, or by filtering a list by colors.
 Users can also click on a card in the given list to see that card's information displayed in a text box.
+Users can create a custom deck, and save that deck to a text file. 
+Users can open previously saved decks, and edit them.
