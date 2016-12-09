@@ -218,6 +218,10 @@ public class UIBuilder {
         base.setPadding(new Insets(10,10,10,10));
         base.setSpacing(5);
 
+        String image = getClass().getResource("backgroundImage.jpg").toExternalForm();
+        base.setStyle("-fx-background-image: url('" + image + "'); " + "-fx-background-position: center center; " +
+                "-fx-background-repeat: stretch;");
+
         setStylesForButton();
         cardInfo.setEditable(false);
         layout.setPrefSize(1000,650);
@@ -262,11 +266,11 @@ public class UIBuilder {
         HBox setSearchAndResearchBars = new HBox(resetButton,searchButton);
         setSearchAndResearchBars.setSpacing(300);
 
+        HBox colorButtons = new HBox(whiteButton, blueButton, blackButton, redButton, greenButton, colorlessButton);
         VBox searchBarAndCardListResults = new VBox(new Label("Enter Search Term:"), searchTermInputArea,
-                setSearchAndResearchBars, new Label("Color:"),
-                new HBox(whiteButton, blueButton, blackButton, redButton, greenButton, colorlessButton),
-                new Label("Cards:"), cardListOutput);
+                setSearchAndResearchBars, new Label("Color:"), colorButtons, new Label("Cards:"), cardListOutput);
         searchBarAndCardListResults.setPadding(new Insets(10,10,10,10));
+        colorButtons.setSpacing(10);
         searchBarAndCardListResults.setSpacing(10);
         return searchBarAndCardListResults;
     }
