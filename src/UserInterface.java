@@ -88,7 +88,7 @@ public class UserInterface extends UIBuilder{
         else if(formats.equalsIgnoreCase("Vintage")){
             chooseFormat(controller.getVintage());
         }
-        else if(formats.equalsIgnoreCase("Commander (EDH)")){
+        else if(formats.equalsIgnoreCase("EDH")){
             chooseFormat(controller.getEdh());
         }
     }
@@ -164,7 +164,7 @@ public class UserInterface extends UIBuilder{
             cardObservableList.clear();
             cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getVintage()));
         }
-        else if(format.getFormatName().equalsIgnoreCase("Commander (EDH)")){
+        else if(format.getFormatName().equalsIgnoreCase("EDH")){
             cardObservableList.clear();
             cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getEdh()));
         }

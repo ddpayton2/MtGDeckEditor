@@ -163,7 +163,7 @@ public class UIController {
         else if(format.getFormatName().equalsIgnoreCase("Vintage")){
             formatCardList.setAll(vintageCardList);
         }
-        else if(format.getFormatName().equalsIgnoreCase("Commander (EDH)")){
+        else if(format.getFormatName().equalsIgnoreCase("EDH")){
             formatCardList.setAll(edhCardList);
         }
         return formatCardList;

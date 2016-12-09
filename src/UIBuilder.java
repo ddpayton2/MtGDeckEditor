@@ -41,7 +41,7 @@ public class UIBuilder {
     public final Button formatButton = new Button("GO");
     public boolean isComboBoxEmpty = true;
     public final ChoiceBox<String> formatsOptions = new ChoiceBox<>(
-            FXCollections.observableArrayList("Standard","Modern","Legacy","Vintage","Commander (EDH)"));
+            FXCollections.observableArrayList("Standard","Modern","Legacy","Vintage","EDH"));
 
     public final UIController controller = new UIController();
 
