@@ -25,7 +25,8 @@ public class CardFilter {
     public void findTerm(List<Card> list, String term) {
 
         searchTermList.clear();
-        searchTermList.addAll(list.stream().filter(card -> card.getCardName().toUpperCase().contains(term.toUpperCase()) || card.getCardType().toUpperCase().contains(term.toUpperCase())
+        searchTermList.addAll(list.stream().filter(card -> card.getCardName().toUpperCase().contains(term.toUpperCase())
+                || card.getCardType().toUpperCase().contains(term.toUpperCase())
                 || card.getCardText().toUpperCase().contains(term.toUpperCase())
                 || card.getCardCost().toUpperCase().contains(term.toUpperCase())
                 || card.getPowerAndToughness().toUpperCase().contains(term.toUpperCase()))
@@ -39,16 +40,8 @@ public class CardFilter {
     public List<Card> filterByFormat(List<Card> list, Format format) {
 
         cardFormatList.clear();
-        for(Card card : list){
-            if(!Collections.disjoint(format.getLegalMtgSetsNames(), card.getSetsPrintedIn())){
-                cardFormatList.add(card);
-            }
-        }
-        for(Card card: format.getBannedList()){
-            if(format.getBannedList().contains(card)){
-                cardFormatList.remove(card);
-            }
-        }
+        cardFormatList.addAll(list.stream().filter(card -> !Collections.disjoint(format.getLegalMtgSetsNames(), card.getSetsPrintedIn())).collect(Collectors.toList()));
+        format.getBannedList().stream().filter(card -> format.getBannedList().contains(card)).forEach(cardFormatList::remove);
         Collections.sort(cardFormatList);
         return cardFormatList;
     }

@@ -27,8 +27,6 @@ public class UIBuilder {
     public final TableColumn cardNames = new TableColumn("Cards");
     public final Button addCardToMainDeck = new Button("Add to Mainboard");
     public final Button removeCardFromMainDeck = new Button ("Remove from Mainboard");
-    public final Button addCardToSideboard = new Button("Add to Sideboard");
-    public final Button removeCardFromSideboard = new Button("Remove from Sideboard");
 
     public final Button searchButton = new Button("Search");
     public final TextArea cardInfo = new TextArea();
@@ -50,7 +48,7 @@ public class UIBuilder {
     public final EnumSet<CardColor> selectedColors = EnumSet.of(CardColor.EMPTY);
     public final ObservableList<Card> cardObservableList = FXCollections.observableArrayList();
     public final ObservableList<Card> filteredList = FXCollections.observableArrayList();
-    public ObservableList<Card> observableDeckList = FXCollections.observableArrayList();
+    public final ObservableList<Card> observableDeckList = FXCollections.observableArrayList();
 
     private final Tooltip searchBarToolTip = new Tooltip();
     private final Tooltip whiteButtonToolTip = new Tooltip();
@@ -66,16 +64,15 @@ public class UIBuilder {
     private final Tooltip formatBoxToolTip = new Tooltip();
     private final Tooltip formatGoButtonToolTip = new Tooltip();
 
-    public MenuItem newDeck = new MenuItem("New Deck");
-    public MenuItem openFile = new MenuItem("Open File");
-    public MenuItem saveFile = new MenuItem("Save File");
-    public MenuItem quit = new MenuItem("Quit");
+    public final MenuItem newDeck = new MenuItem("New Deck");
+    public final MenuItem openFile = new MenuItem("Open File");
+    public final MenuItem saveFile = new MenuItem("Save File");
+    public final MenuItem quit = new MenuItem("Quit");
 
 
     public void main(Stage primaryStage) {
 
         primaryStage.setTitle("Magic: the Gathering Deck Editor");
-        Scene scene = designLayoutForBoxes();
         primaryStage.setScene(designLayoutForLoading());
         primaryStage.show();
 
@@ -85,7 +82,6 @@ public class UIBuilder {
             @Override
             public void run() {
                 controller.setUpAll();
-                controller.buildAllFormats();
                 cardObservableList.addAll(controller.getFullCardList());
                 Collections.sort(cardObservableList);
                 Platform.runLater(new Runnable(){
@@ -255,7 +251,7 @@ public class UIBuilder {
     }
 
     private VBox buildCardInfoDisplayAndDeckEditButtonsArea() {
-        VBox deckEditButtonsArea = new VBox(addCardToMainDeck, removeCardFromMainDeck, addCardToSideboard, removeCardFromSideboard);
+        VBox deckEditButtonsArea = new VBox(addCardToMainDeck, removeCardFromMainDeck);
         VBox cardInfoAndDeckEdit = new VBox( new Label("Card Information:"), cardInfo, new Label("DeckEdit:"), deckEditButtonsArea);
         cardInfoAndDeckEdit.setSpacing(10);
         deckEditButtonsArea.setSpacing(10);
@@ -290,8 +286,6 @@ public class UIBuilder {
         resetButton.setPrefWidth(100);
         addCardToMainDeck.setPrefWidth(200);
         removeCardFromMainDeck.setPrefWidth(200);
-        addCardToSideboard.setPrefWidth(200);
-        removeCardFromSideboard.setPrefWidth(200);
         cardInfo.setMinHeight(410);
         cardInfo.setMaxWidth(200);
         deckListOutput.setMinHeight(530);

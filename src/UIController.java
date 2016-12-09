@@ -26,27 +26,23 @@ public class UIController {
     private Format legacy;
     private Format vintage;
     private Format edh;
-    private List<Card> standardCardList = Lists.newArrayList();
-    private List<Card> modernCardList = Lists.newArrayList();
-    private List<Card> legacyCardList = Lists.newArrayList();
-    private List<Card> vintageCardList = Lists.newArrayList();
-    private List<Card> edhCardList = Lists.newArrayList();
-    private ObservableList<Card> formatCardList = FXCollections.observableArrayList();
+    private final List<Card> standardCardList = Lists.newArrayList();
+    private final List<Card> modernCardList = Lists.newArrayList();
+    private final List<Card> legacyCardList = Lists.newArrayList();
+    private final List<Card> vintageCardList = Lists.newArrayList();
+    private final List<Card> edhCardList = Lists.newArrayList();
+    private final ObservableList<Card> formatCardList = FXCollections.observableArrayList();
     private final CardFilter filter = new CardFilter();
 
     public void setUpAll(){
         try {
             setUpListOfAllCards();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
+        } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
         try {
             setUpListOfAllSets();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
+        } catch (IOException | SAXException e) {
             e.printStackTrace();
         }
         buildAllFormats();
@@ -138,13 +134,13 @@ public class UIController {
         return edh;
     }
 
-    public List<Card> filterByColor(EnumSet<CardColor> colors){
-        filter.filterByCardColor(filter.getCardsWithTerm(), colors);
+    public List<Card> filterByColor(List<Card> list, EnumSet<CardColor> colors){
+        filter.filterByCardColor(list, colors);
         return filter.getFilteredCardList();
     }
 
-    public List<Card> search(String term){
-        filter.findTerm(fullCardList, term);
+    public List<Card> search(List<Card> list, String term){
+        filter.findTerm(list, term);
         return filter.getCardsWithTerm();
     }
 
@@ -156,19 +152,19 @@ public class UIController {
 
         formatCardList.clear();
         if(format.getFormatName().equalsIgnoreCase("Standard")){
-            formatCardList.addAll(standardCardList);
+            formatCardList.setAll(standardCardList);
         }
         else if(format.getFormatName().equalsIgnoreCase("Modern")){
-            formatCardList.addAll(modernCardList);
+            formatCardList.setAll(modernCardList);
         }
         else if(format.getFormatName().equalsIgnoreCase("Legacy")){
-            formatCardList.addAll(legacyCardList);
+            formatCardList.setAll(legacyCardList);
         }
         else if(format.getFormatName().equalsIgnoreCase("Vintage")){
-            formatCardList.addAll(vintageCardList);
+            formatCardList.setAll(vintageCardList);
         }
         else if(format.getFormatName().equalsIgnoreCase("Commander (EDH)")){
-            formatCardList.addAll(edhCardList);
+            formatCardList.setAll(edhCardList);
         }
         return formatCardList;
     }
@@ -176,11 +172,7 @@ public class UIController {
     public List<Card> searchForTermInFormat(String formatName, String term) {
 
         List<Format> allFormats = Lists.newArrayList(standard, modern, legacy, vintage, edh);
-        for(Format format : allFormats){
-            if(format.getFormatName().equalsIgnoreCase(formatName)){
-                filter.findTerm(getFormatCardList(), term);
-            }
-        }
+        allFormats.stream().filter(format -> format.getFormatName().equalsIgnoreCase(formatName)).forEach(format -> filter.findTerm(getFormatCardList(), term));
         return filter.getCardsWithTerm();
     }
 

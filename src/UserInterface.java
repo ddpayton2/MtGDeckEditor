@@ -1,4 +1,3 @@
-import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -7,6 +6,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 public class UserInterface extends UIBuilder{
@@ -39,13 +39,13 @@ public class UserInterface extends UIBuilder{
     private void useAllFilters(String term) {
 
         cardObservableList.clear();
-        if(!isComboBoxEmpty) {
-            cardObservableList.addAll(controller.getFormatCardList());
-            Collections.sort(cardObservableList);
+        if(formatsOptions.getSelectionModel().isEmpty()){
+            cardObservableList.addAll(searchForTerm(controller.getFullCardList(), term));
             cardListOutput.setItems(cardObservableList);
         }
         else{
-            searchForTerm(term);
+            cardObservableList.setAll(controller.searchForTermInFormat(formatsOptions.getValue(), term));
+            cardListOutput.setItems(cardObservableList);
         }
         displayFilteredList();
     }
@@ -62,6 +62,9 @@ public class UserInterface extends UIBuilder{
         colorlessButton.setSelected(false);
 
         if(isComboBoxEmpty){
+            cardObservableList.clear();
+            cardObservableList.addAll(controller.getFullCardList());
+            Collections.sort(cardObservableList);
             cardListOutput.setItems(cardObservableList);
         }
         else{
@@ -73,14 +76,14 @@ public class UserInterface extends UIBuilder{
 
         isComboBoxEmpty = false;
         String formats = formatsOptions.getValue();
-        if(formats.equalsIgnoreCase("Legacy")){
-            chooseFormat(controller.getLegacy());
+        if(formats.equalsIgnoreCase("Standard")){
+            chooseFormat(controller.getStandard());
         }
         else if(formats.equalsIgnoreCase("Modern")){
             chooseFormat(controller.getModern());
         }
-        else if(formats.equalsIgnoreCase("Standard")){
-            chooseFormat(controller.getStandard());
+        else if(formats.equalsIgnoreCase("Legacy")){
+            chooseFormat(controller.getLegacy());
         }
         else if(formats.equalsIgnoreCase("Vintage")){
             chooseFormat(controller.getVintage());
@@ -104,9 +107,8 @@ public class UserInterface extends UIBuilder{
         observableDeckList.remove(deckListOutput.getSelectionModel().getSelectedItem());
     }
 
-    private void searchForTerm(String text) {
-
-        cardListOutput.setItems(FXCollections.observableArrayList(controller.search(text)));
+    private List<Card> searchForTerm(List<Card> list, String text) {
+        return controller.search(list, text);
     }
 
     private void displayFilteredList(){
@@ -137,12 +139,15 @@ public class UserInterface extends UIBuilder{
             }
         }
         filteredList.clear();
-        filteredList.setAll(controller.filterByColor(selectedColors));
+        filteredList.setAll(controller.filterByColor(cardListOutput.getItems(), selectedColors));
+        cardListOutput.getItems().clear();
+        Collections.sort(filteredList);
         cardListOutput.setItems(filteredList);
     }
 
     private void chooseFormat(Format format){
 
+        cardListOutput.getItems().clear();
         if(format.getFormatName().equalsIgnoreCase("Standard")){
             cardObservableList.clear();
             cardObservableList.setAll(controller.retrieveLegalCardsForFormat(controller.getStandard()));
@@ -183,6 +188,7 @@ public class UserInterface extends UIBuilder{
                 BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
                 String line;
                 while((line = reader.readLine()) != null){
+                    //noinspection Convert2streamapi
                     for(Card card : controller.getFullCardList()){
                         if(card.getCardName().equalsIgnoreCase(line)){
                             observableDeckList.add(card);
@@ -195,13 +201,9 @@ public class UserInterface extends UIBuilder{
                         new PropertyValueFactory("cardName")
                 );
                 reader.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
@@ -216,14 +218,12 @@ public class UserInterface extends UIBuilder{
                 BufferedWriter fileWriter;
 
                 fileWriter = new BufferedWriter(new FileWriter(file));
-                for(int i = 0; i < observableDeckList.size(); i++){
-                    fileWriter.write(observableDeckList.get(i).getCardName());
+                for (Card anObservableDeckList : observableDeckList) {
+                    fileWriter.write(anObservableDeckList.getCardName());
                     fileWriter.newLine();
                 }
                 fileWriter.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
