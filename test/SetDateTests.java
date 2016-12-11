@@ -37,8 +37,8 @@ public class SetDateTests {
     public static Collection<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
         setUp();
         return Arrays.asList(new Object[][]{
-                {LocalDate.of(1999,11,12), allSetsList.get(0).getReleaseDate()},
-                {LocalDate.of(2012, 3,30), allSetsList.get(2).getReleaseDate()}
+                {LocalDate.of(2015,8,28), allSetsList.get(0).getReleaseDate()},
+                {LocalDate.of(1999,11,12), allSetsList.get(2).getReleaseDate()}
         });
     }
 

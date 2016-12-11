@@ -5,6 +5,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
@@ -17,10 +18,12 @@ class CardMtgSetHandler extends DefaultHandler {
 
     public class DoneParsingException extends SAXException{}
 
+    @Override
     public void characters(char[] buffer, int start, int length) {
         builder.append(buffer, start, length);
     }
 
+    @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         temp = "";
         if (qName.equalsIgnoreCase("set")) {
@@ -28,6 +31,7 @@ class CardMtgSetHandler extends DefaultHandler {
         }
     }
 
+    @Override
     public void endElement(String uri, String localName, String qName) throws DoneParsingException {
         temp = builder.toString().trim();
         if(qName.equalsIgnoreCase("set")){

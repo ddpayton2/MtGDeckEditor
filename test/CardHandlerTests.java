@@ -37,7 +37,7 @@ public class CardHandlerTests {
                 {"Emrakul, the Promised End", testCard.getCardName()},
                 {"13", testCard.getCardCost()},
                 {"Legendary Creature — Eldrazi", testCard.getCardType()},
-                {"Emrakul, the Promised End costs {1} less to cast for each card type among cards in your graveyard.  \n" +
+                {"Emrakul, the Promised End costs 1 less to cast for each card type among cards in your graveyard.  \n" +
                         "When you cast Emrakul, you gain control of target opponent during that player's next turn. After that turn, that player takes an extra turn.\n" +
                         "Flying, trample, protection from instants", testCard.getCardText()}
         });

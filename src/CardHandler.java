@@ -15,10 +15,12 @@ public class CardHandler extends DefaultHandler{
     public final List<Card> cardList = Lists.newArrayList();
     private String temp;
 
+    @Override
     public void characters(char[] buffer, int start, int length) {
         builder.append(buffer, start, length);
     }
 
+    @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         temp = "";
             if (qName.equalsIgnoreCase("card")) {
@@ -26,6 +28,7 @@ public class CardHandler extends DefaultHandler{
             }
     }
 
+    @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         temp = builder.toString().trim();
         if (qName.equalsIgnoreCase("card")) {
